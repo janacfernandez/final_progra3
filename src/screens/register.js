@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { db, auth } from '../firebase/config';
-import TabContainer from '../components/TabContainer';
 
 class Register extends Component {
     constructor(props) {
@@ -9,26 +8,31 @@ class Register extends Component {
         this.state = {
             email: '',
             password: '',
-            DNI: '',
-            edad: ''
+            user: '',
+            bio: '',
+            registered: false,
+            required: '',
         }
     }
 
     onSubmit() {
+        this.state.email == '' || this.state.password == '' || this.state.user == ''?
+        this.setState({required: 'Tenes que completar el campo de email, usuario y contraseña para enviar este formulario'})
+        :
         auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
             .then(response => {
                 console.log(response);
                 console.log(`El email ingresado es: ${this.state.email}`);
                 console.log(`La contraseña ingresada es: ${this.state.password}`);
-                console.log(`El DNI ingresado es: ${this.state.DNI}`);
-                console.log(`La edad ingresada es: ${this.state.edad}`);
+                console.log(`El usuario ingresado es: ${this.state.user}`);
+                console.log(`La biografía ingresada es: ${this.state.bio}`);
                 db.collection('datosusuarios').add({
                     owner: auth.currentUser.email,
                     createdAt: Date.now(),
-                    DNI: this.state.DNI,
-                    edad: this.state.edad,
+                    user: this.state.user, 
+                    bio: this.state.bio,
                 })
-                    .then(() => { this.props.navigation.navigate('TabContainer'); })
+                    .then(() => { this.props.navigation.navigate('Login'); })
             })
             .catch(error => console.log(error))
     }
@@ -40,7 +44,7 @@ class Register extends Component {
                 <Text style={styles.title}>Registro</Text>
                 <TextInput
                     style={styles.field}
-                    keyboardType='default'
+                    keyboardType='email-address'
                     placeholder='Email'
                     onChangeText={text => this.setState({ email: text })}
                     value={this.state.email}
@@ -55,20 +59,26 @@ class Register extends Component {
                 />
                 <TextInput
                     style={styles.field}
-                    keyboardType='numeric'
-                    placeholder='DNI'
-                    onChangeText={text => this.setState({ DNI: text })}
-                    value={this.state.DNI}
+                    keyboardType='default'
+                    placeholder='Usuario'
+                    onChangeText={text => this.setState({ user: text })}
+                    value={this.state.user}
                 />
                 <TextInput
                     style={styles.field}
-                    keyboardType='numeric'
-                    placeholder='Edad'
-                    onChangeText={text => this.setState({ edad: text })}
-                    value={this.state.edad}
+                    keyboardType='default'
+                    placeholder='Mini biografía'
+                    onChangeText={text => this.setState({ bio: text })}
+                    value={this.state.bio}
                 />
                 <TouchableOpacity onPress={() => this.onSubmit()}>
                     <Text>Registrarme</Text>
+                </TouchableOpacity>
+
+                <Text  style={styles.message}>{this.state.required}</Text>
+
+                <TouchableOpacity onPress={() => this.props.navigation.pop()}>
+                <Text style={styles.text}> Ya tenes una cuenta? Logueate!</Text>
                 </TouchableOpacity>
             </View >
 
@@ -84,6 +94,10 @@ const styles = StyleSheet.create({
     },
     title: {
         marginBottom: 20
+    },
+    message: {
+        color: 'red',
+        fontSize: 20,
     },
     field: {
         borderColor: '#dcdcdc',

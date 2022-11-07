@@ -8,73 +8,74 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            loggedIn: false
+            loggedIn: false,
+            error: [],
         }
     }
 
-    onSubmit() {
-        //Colocar el método de registración de Firebase
-        auth.signInWithEmailAndPassword(this.state.email, this.state.password)
-            .then(response => {
-                console.log(response);
-                console.log(`El email ingresado es: ${this.state.email}`);
-                console.log(`La contraseña ingresada es: ${this.state.password}`);
-                this.setState({ loggedIn: true })
-                this.props.navigation.navigate('TabContainer');
-                alert("Te has logueado!")
-            })
-            .catch(error => console.log(error))
-    }
+
+        onSubmit() {
+            //Colocar el método de registración de Firebase
+            auth.signInWithEmailAndPassword(this.state.email, this.state.password)
+                .then(response => {
+                    console.log(response);
+                    console.log(`El email ingresado es: ${this.state.email}`);
+                    console.log(`La contraseña ingresada es: ${this.state.password}`);
+                    this.setState({ loggedIn: true })
+                    this.props.navigation.navigate('TabContainer');
+                })
+                .catch(error => console.log(error))
+        }
 
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.title}>Logueo</Text>
-                <TextInput
-                    style={styles.field}
-                    keyboardType='default'
-                    placeholder='Email'
-                    onChangeText={text => this.setState({ email: text })}
-                    value={this.state.email}
-                />
-                <TextInput
-                    style={styles.field}
-                    keyboardType='default'
-                    placeholder='password'
-                    secureTextEntry={true}
-                    onChangeText={text => this.setState({ password: text })}
-                    value={this.state.password}
-                />
-                <TouchableOpacity onPress={() => this.onSubmit()}>
-                    <Text>Loguearme</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.pop()}>
-                    <Text> Atras</Text>
-                </TouchableOpacity>
-            </View>
+        render() {
+            return (
+                <View style={styles.container}>
+                    <Text style={styles.title}>Logueo</Text>
+                    <TextInput
+                        style={styles.field}
+                        keyboardType='email-address'
+                        placeholder='Email'
+                        onChangeText={text => this.setState({ email: text })}
+                        value={this.state.email}
+                    />
+                    <TextInput
+                        style={styles.field}
+                        keyboardType='default'
+                        placeholder='password'
+                        secureTextEntry={true}
+                        onChangeText={text => this.setState({ password: text })}
+                        value={this.state.password}
+                    />
+                    <TouchableOpacity onPress={() => this.onSubmit()}>
+                        <Text>Loguearme</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
+                        <Text style={styles.text}> No tenes una cuenta? Crea una!</Text>
+                    </TouchableOpacity>
+                </View>
 
-        )
-    }
-
-}
-
-const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 10,
-        marginTop: 10
-    },
-    title: {
-        marginBottom: 20
-    },
-    field: {
-        borderColor: '#dcdcdc',
-        borderWidth: 1,
-        borderRadius: 2,
-        padding: 3,
-        marginBottom: 8
+            )
+        }
 
     }
-})
+
+    const styles = StyleSheet.create({
+        container: {
+            paddingHorizontal: 10,
+            marginTop: 10
+        },
+        title: {
+            marginBottom: 20
+        },
+        field: {
+            borderColor: '#dcdcdc',
+            borderWidth: 1,
+            borderRadius: 2,
+            padding: 3,
+            marginBottom: 8
+
+        }
+    })
 
 export default Login;
