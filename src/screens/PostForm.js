@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
 import { auth, db } from "../firebase/config";
+import MyCamera from "../components/MyCamera";
 
 const styles = StyleSheet.create({
     formContainer:{
@@ -39,8 +40,9 @@ class PostForm extends Component {
             /*datosusarios: null, */
             post: '',
             /*posts: null,
-            description: '',
-            url: '', */
+            description: '', */
+            photo: '', 
+            camera: true
         }
 
     }
@@ -63,28 +65,52 @@ class PostForm extends Component {
             createdAt: Date.now(),
             post: this.state.post,
             /*user: this.state.datosusarios?.user, */
+            photo: this.state.photo
         })
-        .then(()=> this.props.navigation.navigate('Home'))
+        .then(()=> { 
+            this.props.navigation.navigate('Home')
+            this.setState({
+                camera: true,
+                post : ''
+            })
+  
+})
         .catch(e => console.log(e))
+}
+
+onImageUpload(url){
+
+    this.setState({
+        photo: url,
+        camera: false
+    })
+
 }
 
 render() {
     return (
-        <View style={styles.formContainer}>
-        <Text>Agregar Post</Text>                
         
+    <>
+          {
+        this.state.camera 
+        ?<MyCamera onImageUpload={(url) => this.onImageUpload(url)}/> 
+        : <>
+          <Image style={styles.img} source={{uri: this.state.photo}}/> 
 
+        <Text>Agregar Post</Text>           
         <TextInput style={styles.input}
             keyboardType='default'
             placeholder='Escriba Aquí...'
             onChangeText={(text) => this.setState({ post: text })}
             value={this.state.post} />
 
-        <TouchableOpacity onPress={() => this.onSubmit()} style={styles.button}>
-            <Text style={styles.textButton}> Subir Post</Text>
+        <TouchableOpacity onPress={() => {this.onSubmit(); this.props.navigation.navigate('Home')} }>
+            <Text style={styles.button}> Subir Post</Text>
         </TouchableOpacity>
 
-    </View>
+        </>
+}
+</>
 
     );
 }
