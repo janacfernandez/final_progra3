@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { db, auth } from '../firebase/config';
+import TabContainer from '../components/TabContainer';
 
 class Register extends Component {
     constructor(props) {
