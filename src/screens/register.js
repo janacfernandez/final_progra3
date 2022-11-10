@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { db, auth } from '../firebase/config';
+// import MyCamera from '../components/MyCamera' cuando descargue lo de jana y merge
 
 class Register extends Component {
     constructor(props) {
@@ -10,36 +11,44 @@ class Register extends Component {
             password: '',
             user: '',
             bio: '',
+            img: '',
             registered: false,
             required: '',
+            error: [],
+            camera: true
         }
     }
 
+
+
     onSubmit() {
-        this.state.email == '' || this.state.password == '' || this.state.user == ''?
-        this.setState({required: 'Tenes que completar el campo de email, usuario y contraseña para enviar este formulario'})
-        :
-        auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
-            .then(response => {
-                console.log(response);
-                console.log(`El email ingresado es: ${this.state.email}`);
-                console.log(`La contraseña ingresada es: ${this.state.password}`);
-                console.log(`El usuario ingresado es: ${this.state.user}`);
-                console.log(`La biografía ingresada es: ${this.state.bio}`);
-                db.collection('datosusuarios').add({
-                    owner: auth.currentUser.email,
-                    createdAt: Date.now(),
-                    user: this.state.user, 
-                    bio: this.state.bio,
+        this.state.email == '' || this.state.password == '' || this.state.user == '' ?
+            this.setState({ required: 'Tenes que completar el campo de email, usuario y contraseña para enviar este formulario' })
+            :
+            auth.createUserWithEmailAndPassword(this.state.email, this.state.password)
+                .then(response => {
+                    console.log(response);
+                    console.log(`El email ingresado es: ${this.state.email}`);
+                    console.log(`La contraseña ingresada es: ${this.state.password}`);
+                    console.log(`El usuario ingresado es: ${this.state.user}`);
+                    console.log(`La biografía ingresada es: ${this.state.bio}`);
+                    this.setState({ registered: true })
+                    db.collection('datosusuarios').add({
+                        owner: auth.currentUser.email,
+                        createdAt: Date.now(),
+                        user: this.state.user,
+                        bio: this.state.bio,
+                        img: this.state.img
+                    })
+                        .then(() => { this.props.navigation.navigate('Log In'); })
                 })
-                    .then(() => { this.props.navigation.navigate('Login'); })
-            })
-            .catch(error => console.log(error))
+                .catch(err => { this.setState({ error: err.message }) })
     }
 
+    // usar update para URL de la foto
 
     render() {
-        return (
+        return ( 
             <View style={styles.container}>
                 <Text style={styles.title}>Registro</Text>
                 <TextInput
@@ -71,14 +80,16 @@ class Register extends Component {
                     onChangeText={text => this.setState({ bio: text })}
                     value={this.state.bio}
                 />
+
                 <TouchableOpacity onPress={() => this.onSubmit()}>
                     <Text>Registrarme</Text>
                 </TouchableOpacity>
 
-                <Text  style={styles.message}>{this.state.required}</Text>
+                <Text style={styles.message}>{this.state.error}</Text>
+                <Text style={styles.message}>{this.state.required}</Text>
 
                 <TouchableOpacity onPress={() => this.props.navigation.pop()}>
-                <Text style={styles.text}> Ya tenes una cuenta? Logueate!</Text>
+                    <Text style={styles.text}> Ya tenes una cuenta? Logueate!</Text>
                 </TouchableOpacity>
             </View >
 
