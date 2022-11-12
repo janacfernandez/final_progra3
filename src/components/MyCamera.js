@@ -39,9 +39,7 @@ class MyCamera extends Component {
             permission: false,
             showCamera: true,
             photo: ''
-
         }
-
     }
 
     componentDidMount() {
@@ -64,6 +62,7 @@ class MyCamera extends Component {
                 })
             })
     }
+
     savePhoto() {
         fetch(this.state.photo) // me permite acceder el contenido de un archivo
             .then(res => res.blob()) // el metodo blob me permite tener la representacion binaria de mi imagen         
@@ -79,12 +78,12 @@ class MyCamera extends Component {
             })
             .catch(e => console.log(e)) // en nuestro proyecto no podemos dejarlo así
     }
+
     clearPhoto() {
         this.setState({
             showCamera: true
         })
-    }
-    
+    }   
 
     render() {
 
@@ -129,7 +128,6 @@ class MyCamera extends Component {
                 }
                 </>
                 )
-       
     }
 }
 

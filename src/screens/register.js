@@ -32,7 +32,7 @@ class Register extends Component {
                     user: this.state.user, 
                     bio: this.state.bio,
                 })
-                    .then(() => { this.props.navigation.navigate('Login'); })
+                    .then(() => { this.props.navigation.navigate('Log In'); })
             })
             .catch(error => console.log(error))
     }

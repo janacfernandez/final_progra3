@@ -9,10 +9,18 @@ class Profile extends Component {
         super();
     }  
 
+    logOut(){
+        auth.signOut()
+        this.props.navigation.navigate('Log In')
+    }
+
     render(){    
         return(         
             <View>
                <Text>Profile</Text>
+               <TouchableOpacity onPress={() => this.logOut()}>
+                        <Text>Log Out</Text>
+                    </TouchableOpacity>
             </View>       
         )
     }

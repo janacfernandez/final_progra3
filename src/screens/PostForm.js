@@ -42,7 +42,8 @@ class PostForm extends Component {
             /*posts: null,
             description: '', */
             photo: '', 
-            camera: true
+            camera: true,
+            user: ''
         }
 
     }
@@ -64,7 +65,7 @@ class PostForm extends Component {
             owner: auth.currentUser.email,
             createdAt: Date.now(),
             post: this.state.post,
-            /*user: this.state.datosusarios?.user, */
+            // user: auth.currentUser,
             photo: this.state.photo
         })
         .then(()=> { 

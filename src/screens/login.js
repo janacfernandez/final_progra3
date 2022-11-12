@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { auth } from '../firebase/config';
 
 class Login extends Component {
@@ -10,9 +10,21 @@ class Login extends Component {
             password: '',
             loggedIn: false,
             error: [],
+            loading: true,
         }
     }
 
+    componentDidMount(){
+        auth.onAuthStateChanged(user => {
+            console.log(user.email)
+            if (user){
+                this.props.navigation.navigate('TabContainer');
+            }
+            this.setState({
+                loading: false,
+            })
+        })
+    }
 
         onSubmit() {
             //Colocar el método de registración de Firebase
@@ -30,7 +42,8 @@ class Login extends Component {
 
         render() {
             return (
-                <View style={styles.container}>
+                <>
+                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : <View style={styles.container}>
                     <Text style={styles.title}>Logueo</Text>
                     <TextInput
                         style={styles.field}
@@ -53,11 +66,11 @@ class Login extends Component {
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
                         <Text style={styles.text}> No tenes una cuenta? Crea una!</Text>
                     </TouchableOpacity>
-                </View>
-
+                </View>}
+                
+                </>
             )
         }
-
     }
 
     const styles = StyleSheet.create({
@@ -74,7 +87,6 @@ class Login extends Component {
             borderRadius: 2,
             padding: 3,
             marginBottom: 8
-
         }
     })
 
