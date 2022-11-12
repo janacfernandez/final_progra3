@@ -11,6 +11,7 @@ class Login extends Component {
             loggedIn: false,
             error: [],
             loading: true,
+            required: '',
         }
     }
 
@@ -26,8 +27,11 @@ class Login extends Component {
         })
     }
 
-        onSubmit() {
-            //Colocar el método de registración de Firebase
+    onSubmit() {
+        //Colocar el método de registración de Firebase
+        this.state.email == '' || this.state.password == '' || this.state.user == '' ?
+            this.setState({ required: 'Tenes que completar el campo de email, usuario y contraseña para enviar este formulario' })
+            :
             auth.signInWithEmailAndPassword(this.state.email, this.state.password)
                 .then(response => {
                     console.log(response);
