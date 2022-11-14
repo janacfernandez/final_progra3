@@ -10,23 +10,23 @@ class Home extends Component {
         super();
         this.state = {
             description: "",
-            posteos: [],
+            posts: [],
             loading: true,
             comentario: ''
         }
     }
 
     componentDidMount() {
-        db.collection('Posts').onSnapshot(
+        db.collection('Posts').orderBy('createdAt', 'desc').onSnapshot(
             docs => {
-                let posts = [];
+                let posteos = [];
                 docs.forEach(doc => {
-                    posts.push({
+                    posteos.push({
                         id: doc.id,
                         data: doc.data()
                     })
                     this.setState({
-                        posteos: posts,
+                        posts: posteos,
                         loading: false,
                     })
                 })
@@ -44,8 +44,8 @@ class Home extends Component {
         .then(()=> { 
             this.props.navigation.navigate('Home')  
 })
-        .catch(e => console.log(e))
-}
+        .catch(e => console.log(e)) 
+} 
 
     render() {
         const styles = StyleSheet.create({
@@ -69,14 +69,17 @@ class Home extends Component {
 
         })
 
-
         return (
             <>
                 {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : 
                 
                 <View style={styles.list}>
                     <Search />
-                    <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()} renderItem={({item})=> <Post post={item.data.post} photo = {item.data.photo}></Post> }/>
+                    <FlatList 
+                    data={this.state.posts} 
+                    keyExtractor={item => item.id.toString()} 
+                    renderItem={({item})=> <Post dataPost={item}/>}
+                    />
                 </View>
 
                 // <View style={styles.flatlist}>
