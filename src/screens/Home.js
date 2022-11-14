@@ -1,7 +1,6 @@
-import { CurrentRenderContext } from '@react-navigation/native';
 import React, { Component } from 'react'
-import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, FlatList } from 'react-native';
-import TabContainter from '../components/TabContainer';
+import { View, Image, StyleSheet, TextInput, FlatList } from 'react-native';
+import Post from '../components/Post';
 import { auth, db } from '../firebase/config';
 import Search from './Search';
 
@@ -36,6 +35,18 @@ class Home extends Component {
         console.log(auth.currentUser)
     }
 
+    onComentar(){
+        db.collection('Comentarios').add({
+            owner: auth.currentUser.email,
+            createdAt: Date.now(),
+            comentario: this.state.comentario,
+        })
+        .then(()=> { 
+            this.props.navigation.navigate('Home')  
+})
+        .catch(e => console.log(e))
+}
+
     render() {
         const styles = StyleSheet.create({
             image: {
@@ -51,7 +62,7 @@ class Home extends Component {
                 padding: 3,
                 marginBottom: 8
             },
-            flatlist: {
+            list: {
                 width: '100%',
                 flex: 1
             },
@@ -61,17 +72,28 @@ class Home extends Component {
 
         return (
             <>
-                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : <View style={styles.flatlist}> <Search />
-                    <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()}
-                        renderItem={({ item }) => <><Image style={styles.image} source={{ uri: item.data.photo }} resizeMode='contain' /><Text>{item.data.post}</Text> <TextInput
-                            style={styles.field}
-                            keyboardType='default'
-                            placeholder='Comentar'
-                            onChangeText={text => this.setState({ comentario: text })}
-                            value={this.state.comentario}
-                        /></>}
-                    />
-                </View>}
+                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : 
+                
+                <View style={styles.list}>
+                    <Search />
+                    <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()} renderItem={({item})=> <Post post={item.data.post} photo = {item.data.photo}></Post> }/>
+                </View>
+
+                // <View style={styles.flatlist}>
+
+                    
+                //     <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()}
+                //         renderItem={({ item }) => <><Image style={styles.image} source={{ uri: item.data.photo }} resizeMode='contain' /><Text>{item.data.post}</Text> <TextInput
+                //             style={styles.field}
+                //             keyboardType='default'
+                //             placeholder='Comentar'
+                //             onChangeText={text => this.setState({ comentario: text })}
+                //             value={this.state.comentario}/>
+                //             <TouchableOpacity onPress = {()=>this.onComentar()}></TouchableOpacity>
+                //             </>}
+                //     />
+                // </View>
+                }
             </>
 
 
