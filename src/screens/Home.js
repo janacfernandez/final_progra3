@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput, FlatList } from 'react-native';
 import TabContainter from '../components/TabContainer';
 import { auth, db } from '../firebase/config';
+import Search from './Search';
 
 
 class Home extends Component {
@@ -60,7 +61,7 @@ class Home extends Component {
 
         return (
             <>
-                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : <View style={styles.flatlist}>
+                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : <View style={styles.flatlist}> <Search />
                     <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()}
                         renderItem={({ item }) => <><Image style={styles.image} source={{ uri: item.data.photo }} resizeMode='contain' /><Text>{item.data.post}</Text> <TextInput
                             style={styles.field}

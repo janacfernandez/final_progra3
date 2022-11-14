@@ -74,7 +74,9 @@ class MyCamera extends Component {
                             .then(url => {
                                 this.props.onImageUpload(url);
                             })
+                            .catch(e => console.log(e))
                     })
+                    .catch(e => console.log(e))
             })
             .catch(e => console.log(e)) // en nuestro proyecto no podemos dejarlo así
     }
