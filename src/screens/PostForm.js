@@ -65,8 +65,9 @@ class PostForm extends Component {
             owner: auth.currentUser.email,
             createdAt: Date.now(),
             post: this.state.post,
-            // user: auth.currentUser,
-            photo: this.state.photo
+            // user: auth.currentUser.user,
+            photo: this.state.photo,
+            comentarios: [],
         })
         .then(()=> { 
             this.props.navigation.navigate('Home')
