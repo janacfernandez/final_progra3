@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera';
 
@@ -37,7 +37,7 @@ class Register extends Component {
                         createdAt: Date.now(),
                         user: this.state.user,
                         bio: this.state.bio,
-                        img: this.state.img
+                        img: this.state.img,
                     })
                         .then(() => { this.props.navigation.navigate('Log In'); })
                 })
@@ -83,16 +83,17 @@ class Register extends Component {
                 />
                 {
                     this.state.showCamera === true ?
-                        <MyCamera onImageUpload={(url) => this.onImageUpload(url)} />
+                        <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.camera} />
                         :
-                        <></>
+                        <Image style={styles.img} source={{uri: this.state.img }} />
                 }
 
+
                 {this.state.email == '' || this.state.password == '' || this.state.user == '' ?
-                    <Text> Registrarme</Text>
+                    <Text style={styles.grey}> Registrarme</Text>
                     :
                     <TouchableOpacity onPress={() => this.onSubmit()}>
-                        <Text>Registrarme</Text>
+                        <Text style={styles.blue} >Registrarme</Text>
                     </TouchableOpacity>}
 
 
@@ -114,20 +115,73 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginTop: 10
     },
-    title: {
-        marginBottom: 20
+    grey: {
+        backgroundColor: 'rgb(230, 230, 230)',
+        borderRadius: '15px',
+        margin: '2%',
+        padding: 3,
+        textAlign: 'center',
+        fontSize: 17,
+        color: 'white',
+        width: 350,
+    },
+    blue: {
+        backgroundColor: '#008b8b',
+        borderRadius: '15px',
+        margin: '2%',
+        padding: 3,
+        textAlign: 'center',
+        fontSize: 17,
+        color: 'white',
+        width: 350,
     },
     message: {
         color: 'red',
         fontSize: 20,
+        color: 'red',
+        marginTop: '1%',
+        textAlign: 'center',
+        fontSize: 17,
     },
     field: {
-        borderColor: '#dcdcdc',
-        borderWidth: 1,
-        borderRadius: 2,
-        padding: 3,
-        marginBottom: 8
-
+        width: '100%',
+        fontSize: 17,
+        backgroundColor: 'rgb(230, 230, 230)',
+        margin: '1%',
+        borderRadius: '15px',
+        padding: '1%',
+        color: 'rgb(153, 153, 153)'
+    },
+    title: {
+        fontSize: 50,
+        color: '#008b8b',
+        height: 100,
+        margin: 5,
+    },
+    text: {
+        textAlign: 'right',
+        marginLeft: '50%',
+        color: '#008b8b',
+        marginTop: '1%',
+        fontSize: 12,
+        width: '100%',
+        marginTop: '5%',
+    },
+    container: {
+        backgroundColor: 'white',
+        flex: 1,
+        width: '100vw',
+        padding: 30,
+        justifyContent: 'flex-start',
+        alignItems: 'center'
+    },
+    camera: {
+        flex: 1,
+        margin: 30
+    },
+    img: {
+        width: '200px',
+        height: '200px',
     }
 })
 
