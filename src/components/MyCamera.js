@@ -4,30 +4,30 @@ import { View, StyleSheet, ActivityIndicator, Text, FlatList, ScrollView, Toucha
 import { auth, db, storage } from '../firebase/config';
 
 const styles = StyleSheet.create({
-cameraBody: {
-    height: '100vh',
-    width: '100vw',   
-    position: 'absolute'   
-},
-preview: {
-    height: 300,
-    width: 300
-},
-buttonArea :{       
-    padding:10,
-    flex:1,
-    flexDirection:'row',
-    alignItems: 'center'
-},
-botones: {
-    backgroundColor: 'green',
-    fontSize: 20,
-    borderRadius:5,
-    margin: 10      
-},
-shootButton :{
-    alignItems: 'center'
-}
+    cameraBody: {
+        height: '100vh',
+        width: '100vw',
+        position: 'absolute'
+    },
+    preview: {
+        height: 300,
+        width: 300
+    },
+    buttonArea: {
+        padding: 10,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    botones: {
+        backgroundColor: 'green',
+        fontSize: 20,
+        borderRadius: 5,
+        margin: 10
+    },
+    shootButton: {
+        alignItems: 'center'
+    }
 })
 
 
@@ -74,16 +74,18 @@ class MyCamera extends Component {
                             .then(url => {
                                 this.props.onImageUpload(url);
                             })
+                            .catch(e => console.log(e))
                     })
+                    .catch(e => console.log(e))
             })
-            .catch(e => console.log(e)) // en nuestro proyecto no podemos dejarlo así
+            .catch(e => console.log(e))
     }
 
     clearPhoto() {
         this.setState({
             showCamera: true
         })
-    }   
+    }
 
     render() {
 
@@ -91,43 +93,43 @@ class MyCamera extends Component {
             <>
                 {
                     this.state.permission ?
-                    this.state.showCamera === false
-                        ?
-                        <View>
-                            <Image style={styles.preview}
-                                source={{ uri: this.state.photo }}
-                            />
-                            <View style={styles.buttonArea}>
-                                <TouchableOpacity onPress={() => this.savePhoto()}>
-                                    <Text style={styles.botones} >Aceptar</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.clearPhoto()}>
-                                    <Text style={styles.botones}>Rechazar</Text>
+                        this.state.showCamera === false
+                            ?
+                            <View>
+                                <Image style={styles.preview}
+                                    source={{ uri: this.state.photo }}
+                                />
+                                <View style={styles.buttonArea}>
+                                    <TouchableOpacity onPress={() => this.savePhoto()}>
+                                        <Text style={styles.botones} >Aceptar</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => this.clearPhoto()}>
+                                        <Text style={styles.botones}>Rechazar</Text>
+                                    </TouchableOpacity>
+                                </View>
+
+                            </View>
+                            :
+
+                            <View>
+                                <Camera
+                                    style={styles.cameraBody}
+                                    type={Camera.Constants.Type.front}
+                                    ref={metodosDeCamera => this.metodosDeCamera = metodosDeCamera}
+                                />
+                                <TouchableOpacity
+                                    style={styles.shootButton}
+                                    onPress={() => this.takePicture()}>
+                                    <Text style={styles.botones} >Shoot</Text>
                                 </TouchableOpacity>
                             </View>
-
-                        </View>
                         :
-
-                        <View>
-                            <Camera
-                                style={styles.cameraBody}
-                                type={Camera.Constants.Type.front}
-                                ref={metodosDeCamera => this.metodosDeCamera = metodosDeCamera}
-                            />
-                            <TouchableOpacity
-                                style={styles.shootButton}
-                                onPress={() => this.takePicture()}>
-                                <Text style={styles.botones} >Shoot</Text>
-                            </TouchableOpacity>
-                        </View>
-                    :
-                   <Text>
-                    You need permission to take a picture
-                   </Text>
+                        <Text>
+                            You need permission to take a picture
+                        </Text>
                 }
-                </>
-                )
+            </>
+        )
     }
 }
 

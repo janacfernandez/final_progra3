@@ -9,16 +9,16 @@ class Login extends Component {
             email: '',
             password: '',
             loggedIn: false,
-            error: [],
+            error: '',
             loading: true,
             required: '',
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         auth.onAuthStateChanged(user => {
-            console.log(user.email)
-            if (user){
+            // console.log(user.email)
+            if (user) {
                 this.props.navigation.navigate('TabContainer');
             }
             this.setState({
@@ -28,8 +28,7 @@ class Login extends Component {
     }
 
     onSubmit() {
-        //Colocar el método de registración de Firebase
-        this.state.email == '' || this.state.password == '' || this.state.user == '' ?
+        this.state.email == '' || this.state.password == '' ?
             this.setState({ required: 'Tenes que completar el campo de email, usuario y contraseña para enviar este formulario' })
             :
             auth.signInWithEmailAndPassword(this.state.email, this.state.password)
@@ -40,13 +39,13 @@ class Login extends Component {
                     this.setState({ loggedIn: true })
                     this.props.navigation.navigate('TabContainer');
                 })
-                .catch(error => console.log(error))
-        }
+                .catch(err => { this.setState({ error: err.message }) })
+    }
 
 
-        render() {
-            return (
-                <>
+    render() {
+        return (
+            <>
                 {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : <View style={styles.container}>
                     <Text style={styles.title}>Logueo</Text>
                     <TextInput
@@ -64,34 +63,53 @@ class Login extends Component {
                         onChangeText={text => this.setState({ password: text })}
                         value={this.state.password}
                     />
-                    <TouchableOpacity onPress={() => this.onSubmit()}>
-                        <Text>Loguearme</Text>
-                    </TouchableOpacity>
+                    {
+                        this.state.email == '' || this.state.password == '' ?
+                            <Text>Loguearme</Text>
+                            :
+                            <TouchableOpacity onPress={() => this.onSubmit()}>
+                                <Text>Loguearme</Text>
+                            </TouchableOpacity>
+
+                    }
+
+
+
+                    <Text style={styles.message}>{this.state.error}</Text>
+                    <Text style={styles.message}>{this.state.required}</Text>
+
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
                         <Text style={styles.text}> No tenes una cuenta? Crea una!</Text>
                     </TouchableOpacity>
                 </View>}
-                
-                </>
-            )
-        }
-    }
 
-    const styles = StyleSheet.create({
-        container: {
-            paddingHorizontal: 10,
-            marginTop: 10
-        },
-        title: {
-            marginBottom: 20
-        },
-        field: {
-            borderColor: '#dcdcdc',
-            borderWidth: 1,
-            borderRadius: 2,
-            padding: 3,
-            marginBottom: 8
-        }
-    })
+            </>
+        )
+    }
+}
+
+const styles = StyleSheet.create({
+    container: {
+        paddingHorizontal: 10,
+        marginTop: 10
+    },
+    title: {
+        marginBottom: 20
+    },
+    message: {
+        color: 'red',
+        fontSize: 20,
+    },
+    field: {
+        borderColor: '#dcdcdc',
+        borderWidth: 1,
+        borderRadius: 2,
+        padding: 3,
+        marginBottom: 8
+    },
+    loading: {
+        marginTop: 250,
+    }
+})
 
 export default Login;

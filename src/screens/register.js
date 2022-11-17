@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { db, auth } from '../firebase/config';
-// import MyCamera from '../components/MyCamera' cuando descargue lo de jana y merge
+import MyCamera from '../components/MyCamera';
 
 class Register extends Component {
     constructor(props) {
@@ -14,11 +14,10 @@ class Register extends Component {
             img: '',
             registered: false,
             required: '',
-            error: [],
-            camera: true
+            error: '',
+            showCamera: true,
         }
     }
-
 
 
     onSubmit() {
@@ -45,10 +44,12 @@ class Register extends Component {
                 .catch(err => { this.setState({ error: err.message }) })
     }
 
-    // usar update para URL de la foto
+    onImageUpload(url) {
+        this.setState({ showCamera: false, img: url })
+    }
 
     render() {
-        return ( 
+        return (
             <View style={styles.container}>
                 <Text style={styles.title}>Registro</Text>
                 <TextInput
@@ -80,10 +81,20 @@ class Register extends Component {
                     onChangeText={text => this.setState({ bio: text })}
                     value={this.state.bio}
                 />
+                {
+                    this.state.showCamera === true ?
+                        <MyCamera onImageUpload={(url) => this.onImageUpload(url)} />
+                        :
+                        <></>
+                }
 
-                <TouchableOpacity onPress={() => this.onSubmit()}>
-                    <Text>Registrarme</Text>
-                </TouchableOpacity>
+                {this.state.email == '' || this.state.password == '' || this.state.user == '' ?
+                    <Text> Registrarme</Text>
+                    :
+                    <TouchableOpacity onPress={() => this.onSubmit()}>
+                        <Text>Registrarme</Text>
+                    </TouchableOpacity>}
+
 
                 <Text style={styles.message}>{this.state.error}</Text>
                 <Text style={styles.message}>{this.state.required}</Text>

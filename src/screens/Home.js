@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TextInput, FlatList } from 'react-native';
+import { View, Image, StyleSheet, TextInput, Text, FlatList, TouchableOpacity } from 'react-native';
 import Post from '../components/Post';
 import { auth, db } from '../firebase/config';
 import firebase from 'firebase';
+import Search from './Search';
+
 
 
 class Home extends Component {
@@ -10,29 +12,32 @@ class Home extends Component {
         super();
         this.state = {
             description: "",
-            posteos: [],
+            posts: [],
             loading: true,
             comentario: ''
         }
     }
 
     componentDidMount() {
-        db.collection('Posts').onSnapshot(
+        db.collection('Posts').orderBy('createdAt', 'desc').onSnapshot(
             docs => {
-                let posts = [];
+                let posteos = [];
                 docs.forEach(doc => {
-                    posts.push({
+                    posteos.push({
                         id: doc.id,
                         data: doc.data()
                     })
                     this.setState({
-                        posteos: posts,
+                        posts: posteos,
                         loading: false,
                     })
                 })
             }
         )
-        console.log(auth.currentUser)
+    }
+
+    irComentarios(){
+        this.props.navigation.navigate('Comentarios')
     }
 
     render() {
@@ -54,15 +59,22 @@ class Home extends Component {
                 width: '100%',
                 flex: 1
             },
+            loading:{
+                marginTop: 50,
+            }
         })
-
 
         return (
             <>
                 {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : 
                 
                 <View style={styles.list}>
-                    <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()} renderItem={({item})=> <Post post={item.data.post} id={item.id} photo = {item.data.photo} comentarios={item.data.comentarios}></Post> }/>
+                    <Search />
+                    <FlatList 
+                    data={this.state.posts} 
+                    keyExtractor={item => item.id.toString()} 
+                    renderItem={({item})=> <Post dataPost={item} navigation={this.props.navigation}/> }
+                    />
                 </View>
                 }
             </>

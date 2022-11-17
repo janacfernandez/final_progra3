@@ -1,36 +1,37 @@
 import React, { Component } from "react";
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { auth, db } from "../firebase/config";
 import MyCamera from "../components/MyCamera";
 
+
 const styles = StyleSheet.create({
-    formContainer:{
-        paddingHorizontal:10,
+    formContainer: {
+        paddingHorizontal: 10,
         marginTop: 20,
     },
-    input:{
-        height:100,
-        paddingVertical:15,
+    input: {
+        height: 100,
+        paddingVertical: 15,
         paddingHorizontal: 10,
-        borderWidth:1,
+        borderWidth: 1,
         borderColor: '#ccc',
         borderStyle: 'solid',
         borderRadius: 6,
-        marginVertical:10,
+        marginVertical: 10,
     },
-    button:{
-        backgroundColor:'#28a745',
+    button: {
+        backgroundColor: '#28a745',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
-        borderRadius:4, 
-        borderWidth:1,
+        borderRadius: 4,
+        borderWidth: 1,
         borderStyle: 'solid',
         borderColor: '#28a745'
     },
-    textButton:{
+    textButton: {
         color: '#fff'
-    }, 
+    },
 })
 
 class PostForm extends Component {
@@ -38,10 +39,8 @@ class PostForm extends Component {
         super();
         this.state = {
             /*datosusarios: null, */
-            post: '',
-            /*posts: null,
-            description: '', */
-            photo: '', 
+            textoPost: '',
+            photo: '',
             camera: true,
             user: ''
         }
@@ -64,58 +63,58 @@ class PostForm extends Component {
         db.collection('Posts').add({
             owner: auth.currentUser.email,
             createdAt: Date.now(),
-            post: this.state.post,
-            // user: auth.currentUser.user,
+            textoPost: this.state.textoPost,
+            // user: auth.currentUser,
             photo: this.state.photo,
             comentarios: [],
         })
-        .then(()=> { 
-            this.props.navigation.navigate('Home')
-            this.setState({
-                camera: true,
-                post : ''
+            .then(() => {
+                this.props.navigation.navigate('Home')
+                this.setState({
+                    camera: true,
+                    textoPost: ''
+                })
+
             })
-  
-})
-        .catch(e => console.log(e))
-}
+            .catch(e => console.log(e))
+    }
 
-onImageUpload(url){
+    onImageUpload(url) {
 
-    this.setState({
-        photo: url,
-        camera: false
-    })
+        this.setState({
+            photo: url,
+            camera: false
+        })
 
-}
+    }
 
-render() {
-    return (
-        
-    <>
-          {
-        this.state.camera 
-        ?<MyCamera onImageUpload={(url) => this.onImageUpload(url)}/> 
-        : <>
-          <Image style={styles.img} source={{uri: this.state.photo}}/> 
+    render() {
+        return (
 
-        <Text>Agregar Post</Text>           
-        <TextInput style={styles.input}
-            keyboardType='default'
-            placeholder='Escriba Aquí...'
-            onChangeText={(text) => this.setState({ post: text })}
-            value={this.state.post} />
+            <>
+                {
+                    this.state.camera
+                        ? <MyCamera onImageUpload={(url) => this.onImageUpload(url)} />
+                        : <>
+                            <Image style={styles.img} source={{ uri: this.state.photo }} />
 
-        <TouchableOpacity onPress={() => {this.onSubmit(); this.props.navigation.navigate('Home')} }>
-            <Text style={styles.button}> Subir Post</Text>
-        </TouchableOpacity>
+                            <Text>Agregar Post</Text>
+                            <TextInput style={styles.input}
+                                keyboardType='default'
+                                placeholder='Escriba Aquí...'
+                                onChangeText={(text) => this.setState({ textoPost: text })}
+                                value={this.state.textoPost} />
 
-        </>
-}
-</>
+                            <TouchableOpacity onPress={() => { this.onSubmit(); this.props.navigation.navigate('Home') }}>
+                                <Text style={styles.button}> Subir Post</Text>
+                            </TouchableOpacity>
 
-    );
-}
+                        </>
+                }
+            </>
+
+        );
+    }
 
 }
 

@@ -16,7 +16,6 @@ class TabContainer extends Component {
                 <Tab.Screen name = 'Home' component = {Home} options={{ headerShown: false, tabBarIcon: () => <FontAwesome name="home" size={24} color="black" /> }}/>
                 <Tab.Screen name = 'Post' component={PostForm} options={{headerShown: false, tabBarIcon: () => <FontAwesome name="camera" size={24} color="black"/>}} />
                 <Tab.Screen name = 'Profile' component = {Profile} options={{ headerShown: false, tabBarIcon: () => <FontAwesome name="user" size={24} color="black" /> }}/>
-
             </Tab.Navigator>
         )
     }

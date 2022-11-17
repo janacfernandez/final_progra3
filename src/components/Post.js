@@ -1,32 +1,63 @@
-import React, {Component} from "react";
-import {Text, View, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
-import { auth, db } from '../firebase/config';
+import React, { Component } from "react";
+import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
+import { auth, db } from "../firebase/config";
 import firebase from "firebase";
+import { AntDesign } from '@expo/vector-icons';
 import { FlatList } from "react-native-web";
+
 
 class Post extends Component {
     constructor(props) {
         super(props);
         this.state = {
             description: "",
-            posteos: [],
+            myLike: false,
+            likes: 0,
             loading: true,
-            comentario: ''
+        }
+    }
+    componentDidMount() {
+        if (this.props.dataPost.data.likes) {
+            this.setState({
+                likes: this.props.dataPost.data.likes.length,
+                myLike: this.props.dataPost.data.likes.includes(auth.currentUser.email),
+            })
         }
     }
 
-    onComentar(){
-        db.collection('Posts')
-        .doc(this.props.id)
-        .update({
-            comentarios: firebase.firestore.FieldValue.arrayUnion({owner: auth.currentUser.email, text: this.state.comentario, author: auth.currentUser.email, createdAt: Date.now()})
+    like() {
+        db.collection('Posts').doc(this.props.dataPost.id).update({
+            likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
         })
-        .catch((e)=>{
-            console.log(e)
-        })
-}
+            .then(() => {
+                this.setState({
+                    likes: this.props.dataPost.data.likes.length,
+                    myLike: true
+                })
+            })
+            .catch(e => console.log(e));
+        }
 
-    render(){
+
+    dislike() {
+        db.collection('Posts').doc(this.props.dataPost.id).update({
+            likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
+        })
+            .then(() => {
+                this.setState({
+                    likes: this.props.dataPost.data.likes.length,
+                    myLike: false
+                })
+            })
+            .catch(e => console.log(e));
+
+    }
+
+    irComentarios() {
+        this.props.navigation.navigate('Comentarios', {id:this.props.dataPost.id, post: this.props.dataPost.data} )
+    }
+
+    render() {
         const styles = StyleSheet.create({
             image: {
                 height: 200,
@@ -40,20 +71,27 @@ class Post extends Component {
             },
         })
 
-        return(
+
+        return (
             <View>
-                <Image style={styles.image} source={{ uri: this.props.photo }} resizeMode='contain' />
-                <Text>{this.props.post}</Text>
-                <TextInput
-                            style={styles.field}
-                            keyboardType='default'
-                            placeholder='Comentar'
-                            onChangeText={text => this.setState({ comentario: text })}
-                            value={this.state.comentario}/>
+                <Text> {this.props.dataPost.data.owner}</Text>
+                <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
+                <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
+                <Text>{this.props.dataPost.data.textoPost}</Text>
 
-                <TouchableOpacity onPress = {()=>this.onComentar()}><Text>Comentar</Text></TouchableOpacity>
 
-                <FlatList data={this.props.comentarios} keyExtractor={item => item.createdAt.toString()} renderItem={({item})=> <Text>{item.text}</Text>}/>
+
+                <Text>{this.state.likes}</Text>
+                {
+                    this.state.myLike ?
+                        <TouchableOpacity onPress={() => this.dislike()}>
+                            <Text><AntDesign name="heart" size={24} color="red" /></Text>
+                        </TouchableOpacity> :
+                        <TouchableOpacity onPress={() => this.like()}>
+                            <Text><AntDesign name="hearto" size={24} color="black" /></Text>
+                        </TouchableOpacity>
+
+                }
             </View>
         )
     }
