@@ -1,8 +1,46 @@
-import React, { Component } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
+import React, { Component, useState } from "react";
+import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button } from 'react-native';
 import { auth, db } from "../firebase/config";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+
+const styles = StyleSheet.create({
+    container: {
+        marginVertical: 20,
+        border: '1px solid #008b8b ',
+        backgroundColor: 'white',
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+    },
+    imagen: {
+        height: 350,
+    },
+
+    containerLikeCommDel: {
+        marginBottom: 30,
+        paddingHorizontal: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    likes: {
+        width: '49%',
+        justifyContent: 'flex-start',
+        textAlign: 'right',
+        text: {
+            paddingRight: 4
+        }
+    },
+    user: {
+        padding: 0,
+        textAlign: 'center',
+        text: {
+            fontWeight: 'bold'
+        }
+    },
+
+})
 
 class Post extends Component {
     constructor(props) {
@@ -50,36 +88,44 @@ class Post extends Component {
             .catch(e => console.log(e));
 
     }
-    render() {
-        const styles = StyleSheet.create({
-            image: {
-                height: 200,
-            },
-            field: {
-                borderColor: '#dcdcdc',
-                borderWidth: 1,
-                borderRadius: 2,
-                padding: 3,
-                marginBottom: 8
-            },
-        })
 
+    deletePost() {
+        db.collection('Posts').doc(this.props.dataPost.id).delete()
+    }
+
+
+
+    render() {
         return (
-            <View>
-                <Text> {this.props.dataPost.data.owner}</Text>
-                <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
-                <Text>{this.props.dataPost.data.textoPost}</Text>
-                <Text>{this.state.likes}</Text>
+            <View style={styles.container}>
                 {
-                    this.state.myLike ?
-                        <TouchableOpacity onPress={() => this.dislike()}>
-                            <Text><AntDesign name="heart" size={24} color="red" /></Text>
+                    auth.currentUser.email === this.props.dataPost.data.owner ?
+                        <TouchableOpacity onPress={() => this.deletePost()}>
+                            <Entypo name="cross" size={24} color="#008b8b" />
                         </TouchableOpacity> :
-                        <TouchableOpacity onPress={() => this.like()}>
-                            <Text><AntDesign name="hearto" size={24} color="black" /></Text>
-                        </TouchableOpacity>
+                        <View >
+                        </View>
 
                 }
+                <TouchableOpacity style={styles.user}>
+                    <Text> {this.props.dataPost.data.owner}</Text>
+                </TouchableOpacity>
+
+                <Image style={styles.imagen} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
+
+                <View style={styles.containerLikeCommDel}>
+                    {
+                        this.state.myLike ?
+                            <TouchableOpacity style={styles.likes} onPress={() => this.dislike()}>
+                                <Text>{this.state.likes}</Text><Text><AntDesign name="heart" size={24} color="red" /></Text>
+                            </TouchableOpacity> :
+                            <TouchableOpacity style={styles.likes} onPress={() => this.like()}>
+                                <Text>{this.state.likes}</Text><Text><AntDesign name="hearto" size={24} color="black" /></Text>
+                            </TouchableOpacity>
+
+                    }
+                </View>
+                <Text>{this.props.dataPost.data.textoPost}</Text>
             </View>
         )
     }

@@ -35,7 +35,7 @@ class Home extends Component {
         console.log(auth.currentUser)
     }
 
-    onComentar(){
+  /*  onComentar(){
         db.collection('Comentarios').add({
             owner: auth.currentUser.email,
             createdAt: Date.now(),
@@ -45,7 +45,7 @@ class Home extends Component {
             this.props.navigation.navigate('Home')  
 })
         .catch(e => console.log(e)) 
-} 
+}  */
 
     render() {
         const styles = StyleSheet.create({

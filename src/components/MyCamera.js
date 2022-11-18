@@ -91,8 +91,7 @@ class MyCamera extends Component {
 
         return (
             <>
-                {
-                    this.state.permission ?
+                {this.state.permission ?
                         this.state.showCamera === false
                             ?
                             <View>
