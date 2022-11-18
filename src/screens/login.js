@@ -102,6 +102,10 @@ const styles = StyleSheet.create({
         borderRadius: '15px',
         margin: '2%',
         padding: 3,
+        marginBottom: 8
+    },
+    loading: {
+        marginTop: 250,
         textAlign: 'center',
         fontSize: 17,
         color: 'white',

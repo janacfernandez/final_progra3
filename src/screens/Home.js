@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TextInput, FlatList } from 'react-native';
+import { View, Image, StyleSheet, TextInput, Text, FlatList, TouchableOpacity } from 'react-native';
 import Post from '../components/Post';
 import { auth, db } from '../firebase/config';
+import firebase from 'firebase';
 import Search from './Search';
+
 
 
 class Home extends Component {
@@ -32,20 +34,11 @@ class Home extends Component {
                 })
             }
         )
-        console.log(auth.currentUser)
     }
 
-  /*  onComentar(){
-        db.collection('Comentarios').add({
-            owner: auth.currentUser.email,
-            createdAt: Date.now(),
-            comentario: this.state.comentario,
-        })
-        .then(()=> { 
-            this.props.navigation.navigate('Home')  
-})
-        .catch(e => console.log(e)) 
-}  */
+    irComentarios(){
+        this.props.navigation.navigate('Comentarios')
+    }
 
     render() {
         const styles = StyleSheet.create({
@@ -66,7 +59,9 @@ class Home extends Component {
                 width: '100%',
                 flex: 1
             },
-
+            loading:{
+                marginTop: 50,
+            }
         })
 
         return (
@@ -78,29 +73,11 @@ class Home extends Component {
                     <FlatList 
                     data={this.state.posts} 
                     keyExtractor={item => item.id.toString()} 
-                    renderItem={({item})=> <Post dataPost={item}/>}
+                    renderItem={({item})=> <Post dataPost={item} navigation={this.props.navigation}/> }
                     />
                 </View>
-
-                // <View style={styles.flatlist}>
-
-                    
-                //     <FlatList data={this.state.posteos} keyExtractor={item => item.id.toString()}
-                //         renderItem={({ item }) => <><Image style={styles.image} source={{ uri: item.data.photo }} resizeMode='contain' /><Text>{item.data.post}</Text> <TextInput
-                //             style={styles.field}
-                //             keyboardType='default'
-                //             placeholder='Comentar'
-                //             onChangeText={text => this.setState({ comentario: text })}
-                //             value={this.state.comentario}/>
-                //             <TouchableOpacity onPress = {()=>this.onComentar()}></TouchableOpacity>
-                //             </>}
-                //     />
-                // </View>
                 }
             </>
-
-
-
         )
     }
 }

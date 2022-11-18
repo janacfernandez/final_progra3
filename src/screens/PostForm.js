@@ -39,6 +39,7 @@ class PostForm extends Component {
             textoPost: this.state.textoPost,
             // user: auth.currentUser,
             photo: this.state.photo,
+            comentarios: [],
         })
             .then(() => {
                 this.props.navigation.navigate('Home')

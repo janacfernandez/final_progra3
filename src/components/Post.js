@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
 
     likes: {
         width: '49%',
-        justifyContent: 'flex-start',
         textAlign: 'right',
         text: {
             paddingRight: 4
@@ -37,10 +36,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         text: {
             fontWeight: 'bold'
-        }
+        },
+
+        field: {
+            borderColor: '#dcdcdc',
+            borderWidth: 1,
+            borderRadius: 2,
+            padding: 3,
+            marginBottom: 8
+        },
     },
 
 })
+
 
 class Post extends Component {
     constructor(props) {
@@ -50,7 +58,6 @@ class Post extends Component {
             myLike: false,
             likes: 0,
             loading: true,
-            comentario: '',
         }
     }
     componentDidMount() {
@@ -61,6 +68,7 @@ class Post extends Component {
             })
         }
     }
+
     like() {
         db.collection('Posts').doc(this.props.dataPost.id).update({
             likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
@@ -72,8 +80,8 @@ class Post extends Component {
                 })
             })
             .catch(e => console.log(e));
+        }
 
-    }
 
     dislike() {
         db.collection('Posts').doc(this.props.dataPost.id).update({
@@ -94,8 +102,12 @@ class Post extends Component {
     }
 
 
+    irComentarios() {
+        this.props.navigation.navigate('Comentarios', {id:this.props.dataPost.id, post: this.props.dataPost.data} )
+    }
 
     render() {
+
         return (
             <View style={styles.container}>
                 {
@@ -117,13 +129,15 @@ class Post extends Component {
                     {
                         this.state.myLike ?
                             <TouchableOpacity style={styles.likes} onPress={() => this.dislike()}>
-                                <Text>{this.state.likes}</Text><Text><AntDesign name="heart" size={24} color="red" /></Text>
+                                {this.state.likes}<AntDesign name="heart" size={24} color="red" />
                             </TouchableOpacity> :
                             <TouchableOpacity style={styles.likes} onPress={() => this.like()}>
-                                <Text>{this.state.likes}</Text><Text><AntDesign name="hearto" size={24} color="black" /></Text>
+                                {this.state.likes}<AntDesign name="hearto" size={24} color="black" />
                             </TouchableOpacity>
-
                     }
+                     <TouchableOpacity >
+                                <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
+                                 </TouchableOpacity>
                 </View>
                 <Text>{this.props.dataPost.data.textoPost}</Text>
             </View>
