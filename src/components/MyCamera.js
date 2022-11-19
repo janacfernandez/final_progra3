@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     botones: {
-        backgroundColor: 'green',
+        backgroundColor: '#008b8b',
         fontSize: 20,
         borderRadius: 5,
         margin: 10
@@ -28,8 +28,7 @@ const styles = StyleSheet.create({
     shootButton: {
         alignItems: 'center'
     }
-})
-
+});
 
 class MyCamera extends Component {
 
@@ -131,6 +130,6 @@ class MyCamera extends Component {
         )
     }
 }
-
-
 export default MyCamera;
+
+

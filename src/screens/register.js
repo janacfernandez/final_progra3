@@ -3,6 +3,70 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera';
 
+const styles = StyleSheet.create({
+    grey: {
+        backgroundColor: 'rgb(230, 230, 230)',
+        borderRadius: '15px',
+        margin: '3%',
+        color: 'white',
+        padding: 3,
+    },
+    blue: {
+        backgroundColor: '#008b8b',
+        borderRadius: '15px',
+        margin: '3%',
+        padding: 3,
+        fontSize: 17,
+        color: 'white',
+        width: 350,
+    },
+    message: {
+        color: 'red',
+        marginTop: '1%',
+        fontSize: 12,
+    },
+    field: {
+        width: '100%',
+        fontSize: 17,
+        backgroundColor: 'rgb(230, 230, 230)',
+        margin: '1%',
+        borderRadius: '15px',
+        padding: '1%',
+        color: 'rgb(153, 153, 153)'
+    },
+    title: {
+        fontSize: 50,
+        color: '#008b8b',
+        margin: 5,
+        fontWeight: 'bold',
+    },
+    text: {
+        color: '#008b8b',
+        fontSize: 15,
+        width: '100%',
+        marginTop: '2%',
+    },
+    container: {
+        flex: 1,
+        width: '100vw',
+        padding: 30,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    camera: {
+        width: '50%',
+        height: '50%',
+        borderRadius: 400,
+        marginBottom: 5,
+        flex: 1,
+        margin: 30
+    },
+    img: {
+        width: '100px',
+        height: '200px',
+    }
+});
+
 class Register extends Component {
     constructor(props) {
         super(props)
@@ -85,7 +149,7 @@ class Register extends Component {
                     this.state.showCamera === true ?
                         <MyCamera style={styles.camera} onImageUpload={(url) => this.onImageUpload(url)} />
                         :
-                        <Image style={styles.img} source={{uri: this.state.img }} />
+                        <Image style={styles.img} source={{ uri: this.state.img }} />
                 }
 
 
@@ -110,68 +174,5 @@ class Register extends Component {
 
 }
 
-const styles = StyleSheet.create({
-    grey: {
-        backgroundColor: 'rgb(230, 230, 230)',
-        borderRadius: '15px',
-        margin: '3%',
-        color: 'white',
-        padding: 3,
-    },
-    blue: {
-        backgroundColor: '#008b8b',
-        borderRadius: '15px',
-        margin: '3%',
-        padding: 3,
-        fontSize: 17,
-        color: 'white',
-        width: 350,
-    },
-    message: {
-        color: 'red',
-        marginTop: '1%',
-        fontSize: 12,
-    },
-    field: {
-        width: '100%',
-        fontSize: 17,
-        backgroundColor: 'rgb(230, 230, 230)',
-        margin: '1%',
-        borderRadius: '15px',
-        padding: '1%',
-        color: 'rgb(153, 153, 153)'
-    },
-    title: {
-        fontSize: 50,
-        color: '#008b8b',
-        margin: 5,
-        fontWeight: 'bold',
-    },
-    text: {
-        color: '#008b8b',
-        fontSize: 15,
-        width: '100%',
-        marginTop: '2%',
-    },
-    container: {
-        flex: 1,
-        width: '100vw',
-        padding: 30,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    camera: {
-        width: '50%',
-        height: '50%',
-        borderRadius: 400,
-        marginBottom: 5,
-        flex: 1,
-        margin: 30
-    },
-    img: {
-        width: '100px',
-        height: '200px',
-    }
-})
 
 export default Register;

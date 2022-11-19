@@ -4,7 +4,6 @@ import Home from '../screens/Home';
 import Profile from '../screens/Profile';
 import PostForm from '../screens/PostForm';
 import { FontAwesome } from '@expo/vector-icons';
-import Images from './Images'
 
 class TabContainer extends Component {
     constructor(){

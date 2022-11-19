@@ -4,6 +4,36 @@ import { auth, db } from "../firebase/config";
 import MyCamera from "../components/MyCamera";
 import Images from "../components/Images";
 
+const styles = StyleSheet.create({
+    container:{
+      flex:1,
+      width: '50%',
+      height: '50%',
+      alignItems: 'center',
+      justifyContent: 'center',
+      margin: 'auto'
+  },
+    form:{
+      border: '2px solid #008b8b',
+      marginBottom: '7px',
+      padding: '10px',
+      width: '350px'
+  },
+    imagen:{
+      height: '350px',
+      width: '350px',
+      marginBottom: '20px',
+      marginTop: '20px' 
+   },
+   button:{
+    fontSize: '25px',
+    color: 'white',
+    backgroundColor: '#008080',
+    fontWeight: 'bold',
+    padding: '5px'
+  },
+  
+  });
 
 class PostForm extends Component {
     constructor(props) {
@@ -19,6 +49,7 @@ class PostForm extends Component {
         }
 
     }
+
     componentDidMount() {
         db.collection('datosusuarios').onSnapshot(
             docs => {
@@ -40,17 +71,20 @@ class PostForm extends Component {
             // user: auth.currentUser,
             photo: this.state.photo,
             comentarios: [],
+
         })
             .then(() => {
                 this.props.navigation.navigate('Home')
                 this.setState({
                     camera: false,
-                    textoPost: ''
+                    gallery:false,
+                    elegirFoto: true
                 })
 
             })
             .catch(e => console.log(e))
     }
+
 
     onImageUpload(url) {
 
@@ -65,9 +99,7 @@ class PostForm extends Component {
     } 
 
     render() {
-       
         return (
-
             <>
                 {
                     this.state.camera
@@ -116,36 +148,5 @@ class PostForm extends Component {
     } 
 
 }
-
-const styles = StyleSheet.create({
-    container:{
-      flex:1,
-      width: '50%',
-      height: '50%',
-      alignItems: 'center',
-      justifyContent: 'center',
-      margin: 'auto'
-  },
-    form:{
-      border: '2px solid #008b8b',
-      marginBottom: '7px',
-      padding: '10px',
-      width: '350px'
-  },
-    imagen:{
-      height: '350px',
-      width: '350px',
-      marginBottom: '20px',
-      marginTop: '20px' 
-   },
-   button:{
-    fontSize: '25px',
-    color: 'white',
-    backgroundColor: '#008080',
-    fontWeight: 'bold',
-    padding: '5px'
-  },
-  
-  })
 
 export default PostForm; 

@@ -2,6 +2,70 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { auth } from '../firebase/config';
 
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        width: '100vw',
+        padding: 30,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+    },
+    message: {
+        color: 'red',
+        fontSize: 20,
+    },
+    grey: {
+        backgroundColor: 'rgb(230, 230, 230)',
+        borderRadius: '15px',
+        margin: '3%',
+        color: 'white',
+        padding: 3,
+    },
+    loading: {
+        marginTop: 250,
+        alignItems: 'center',
+        fontSize: 17,
+        color: 'white',
+        width: 350,
+    },
+    blue: {
+        backgroundColor: '#008b8b',
+        borderRadius: '15px',
+        margin: '3%',
+        padding: 3,
+        fontSize: 17,
+        color: 'white',
+        width: 350,
+    },
+    field: {
+        width: '100%',
+        fontSize: 17,
+        backgroundColor: 'rgb(230, 230, 230)',
+        margin: '1%',
+        borderRadius: '15px',
+        padding: '1%',
+        color: 'rgb(153, 153, 153)'
+    },
+    text: {
+        color: '#008b8b',
+        fontSize: 15,
+        width: '100%',
+        marginTop: '2%',
+    },
+    title: {
+        fontSize: 50,
+        color: '#008b8b',
+        fontWeight: 'bold',
+        margin: 5,
+    },
+    error: {
+        color: 'red',
+        marginTop: '1%',
+        fontSize: 12,
+    }
+});
+
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -87,68 +151,4 @@ class Login extends Component {
         )
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100vw',
-        padding: 30,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    message: {
-        color: 'red',
-        fontSize: 20,
-    },
-    grey: {
-        backgroundColor: 'rgb(230, 230, 230)',
-        borderRadius: '15px',
-        margin: '3%',
-        color: 'white',
-        padding: 3,
-    },
-    loading: {
-        marginTop: 250,
-        alignItems: 'center',
-        fontSize: 17,
-        color: 'white',
-        width: 350,
-    },
-    blue: {
-        backgroundColor: '#008b8b',
-        borderRadius: '15px',
-        margin: '3%',
-        padding: 3,
-        fontSize: 17,
-        color: 'white',
-        width: 350,
-    },
-    field: {
-        width: '100%',
-        fontSize: 17,
-        backgroundColor: 'rgb(230, 230, 230)',
-        margin: '1%',
-        borderRadius: '15px',
-        padding: '1%',
-        color: 'rgb(153, 153, 153)'
-    },
-    text: {
-        color: '#008b8b',
-        fontSize: 15,
-        width: '100%',
-        marginTop: '2%',
-    },
-    title: {
-        fontSize: 50,
-        color: '#008b8b',
-        fontWeight: 'bold',
-        margin: 5,
-    },
-    error: {
-        color: 'red',
-        marginTop: '1%',
-        fontSize: 12,
-    }
-})
-
 export default Login;

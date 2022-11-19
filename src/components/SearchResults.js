@@ -2,6 +2,24 @@ import { Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
 import React, { Component } from 'react';
 import { auth} from '../firebase/config';
 
+const styles = StyleSheet.create({
+    texto: {
+        alignSelf: 'center',
+        fontSize: 15,
+        fontWeight: 'bold',
+    },
+    imagen: {
+        height: 70,
+        width: 70,
+        borderRadius: 30,
+        borderColor: 'white',
+        alignSelf: 'center',
+    },
+    padre: {
+        flexDirection: 'column',
+    }
+
+});
 
 class SearchResults extends Component {
     constructor(props) {
@@ -34,22 +52,4 @@ class SearchResults extends Component {
     }
 }
 
-const styles = StyleSheet.create({
-    texto: {
-        alignSelf: 'center',
-        fontSize: 15,
-        fontWeight: 'bold',
-    },
-    imagen: {
-        height: 70,
-        width: 70,
-        borderRadius: 30,
-        borderColor: 'white',
-        alignSelf: 'center',
-    },
-    padre: {
-        flexDirection: 'column',
-    }
-
-})
 export default SearchResults;

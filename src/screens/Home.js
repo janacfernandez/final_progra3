@@ -5,7 +5,28 @@ import { auth, db } from '../firebase/config';
 import firebase from 'firebase';
 import Search from './Search';
 
-
+const styles = StyleSheet.create({
+    image: {
+        height: 200,
+    },
+    loading: {
+        height: 200,
+    },
+    field: {
+        borderColor: '#dcdcdc',
+        borderWidth: 1,
+        borderRadius: 2,
+        padding: 3,
+        marginBottom: 8
+    },
+    list: {
+        width: '100%',
+        flex: 1
+    },
+    loading: {
+        marginTop: 50,
+    }
+});
 
 class Home extends Component {
     constructor() {
@@ -36,46 +57,24 @@ class Home extends Component {
         )
     }
 
-    irComentarios(){
+    irComentarios() {
         this.props.navigation.navigate('Comentarios')
     }
 
     render() {
-        const styles = StyleSheet.create({
-            image: {
-                height: 200,
-            },
-            loading: {
-                height: 200,
-            },
-            field: {
-                borderColor: '#dcdcdc',
-                borderWidth: 1,
-                borderRadius: 2,
-                padding: 3,
-                marginBottom: 8
-            },
-            list: {
-                width: '100%',
-                flex: 1
-            },
-            loading:{
-                marginTop: 50,
-            }
-        })
 
         return (
             <>
-                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : 
-                
-                <View style={styles.list}>
-                    <Search />
-                    <FlatList 
-                    data={this.state.posts} 
-                    keyExtractor={item => item.id.toString()} 
-                    renderItem={({item})=> <Post dataPost={item} navigation={this.props.navigation}/> }
-                    />
-                </View>
+                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> :
+
+                    <View style={styles.list}>
+                        <Search />
+                        <FlatList
+                            data={this.state.posts}
+                            keyExtractor={item => item.id.toString()}
+                            renderItem={({ item }) => <Post dataPost={item} navigation={this.props.navigation} />}
+                        />
+                    </View>
                 }
             </>
         )
