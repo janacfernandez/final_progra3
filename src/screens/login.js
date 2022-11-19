@@ -90,8 +90,11 @@ class Login extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
         flex: 1,
+        width: '100vw',
+        padding: 30,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
     },
     message: {
         color: 'red',
@@ -100,13 +103,13 @@ const styles = StyleSheet.create({
     grey: {
         backgroundColor: 'rgb(230, 230, 230)',
         borderRadius: '15px',
-        margin: '2%',
+        margin: '3%',
+        color: 'white',
         padding: 3,
-        marginBottom: 8
     },
     loading: {
         marginTop: 250,
-        textAlign: 'center',
+        alignItems: 'center',
         fontSize: 17,
         color: 'white',
         width: 350,
@@ -114,9 +117,8 @@ const styles = StyleSheet.create({
     blue: {
         backgroundColor: '#008b8b',
         borderRadius: '15px',
-        margin: '2%',
+        margin: '3%',
         padding: 3,
-        textAlign: 'center',
         fontSize: 17,
         color: 'white',
         width: 350,
@@ -131,23 +133,20 @@ const styles = StyleSheet.create({
         color: 'rgb(153, 153, 153)'
     },
     text: {
-        textAlign: 'right',
         color: '#008b8b',
-        marginTop: '1%',
-        fontSize: 12,
+        fontSize: 15,
         width: '100%',
-        marginTop: '5%',
+        marginTop: '2%',
     },
     title: {
         fontSize: 50,
         color: '#008b8b',
-        height: 100,
+        fontWeight: 'bold',
         margin: 5,
     },
     error: {
         color: 'red',
         marginTop: '1%',
-        textAlign: 'center',
         fontSize: 12,
     }
 })
