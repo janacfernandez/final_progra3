@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button, FlatList } from 'react-native';
 import { auth, db } from "../firebase/config";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 8,
     },
-    imagen: {
+    image: {
         height: 350,
     },
 
@@ -45,8 +45,24 @@ const styles = StyleSheet.create({
             padding: 3,
             marginBottom: 8
         },
+        image: {
+            height: 200,
+        },
+        field: {
+            borderColor: '#dcdcdc',
+            borderWidth: 1,
+            borderRadius: 2,
+            padding: 3,
+            marginBottom: 8
+        },
+        containerComentario: {
+            margin: 3,
+            border: '1px solid #008b8b ',
+            backgroundColor: 'white',
+            paddingVertical: 5,
+            paddingHorizontal: 8,
+        },
     },
-
 })
 
 
@@ -107,28 +123,7 @@ class Post extends Component {
         this.props.navigation.navigate('Comentarios', {id:this.props.dataPost.id, post: this.props.dataPost.data} )
     }
 
-    render() {
-        const styles = StyleSheet.create({
-            image: {
-                height: 200,
-            },
-            field: {
-                borderColor: '#dcdcdc',
-                borderWidth: 1,
-                borderRadius: 2,
-                padding: 3,
-                marginBottom: 8
-            },
-            containerComentario: {
-                margin: 3,
-                border: '1px solid #008b8b ',
-                backgroundColor: 'white',
-                paddingVertical: 5,
-                paddingHorizontal: 8,
-            },
-        })
-
-        
+    render() {      
 
         return (
             <View style = {styles.container}>

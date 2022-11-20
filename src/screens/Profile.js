@@ -53,21 +53,6 @@ class Profile extends Component {
             posteosUsuario: posteos,
         });
         });
-
-        // db.collection('datosusuarios')
-        //     .where('owner', '==', usuario)            
-        //     .onSnapshot(docs => {
-        //         let informacionUsuario = []
-        //         docs.forEach(doc=>{
-        //             informacionUsuario.push({
-        //                 data: doc.data()
-        //             })
-        //     })
-        //         this.setState({
-        //             usuarioState: informacionUsuario,
-        //         }) 
-        //     });
-            
     }
     
         
@@ -85,8 +70,6 @@ class Profile extends Component {
         return(
 
             <View>
-
-                <AntDesign onPress={()=>this.props.navigation.pop()} name="doubleleft" size={24} color="black" />
                 <AntDesign onPress={()=>this.props.navigation.navigate('Home')} name="home" size={24} color="black" />
 
             {this.state.usuarioState.owner == auth.currentUser.email ?
