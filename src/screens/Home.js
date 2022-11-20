@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TextInput, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Post from '../components/Post';
-import { auth, db } from '../firebase/config';
-import firebase from 'firebase';
+import { db } from '../firebase/config';
 import Search from './Search';
 
 const styles = StyleSheet.create({
@@ -10,7 +9,7 @@ const styles = StyleSheet.create({
         height: 200,
     },
     loading: {
-        height: 200,
+        marginTop: 250,
     },
     field: {
         borderColor: '#dcdcdc',
@@ -23,10 +22,10 @@ const styles = StyleSheet.create({
         width: '100%',
         flex: 1
     },
-    loading: {
-        marginTop: 50,
+    loading:{
+        marginTop: 250,
     }
-});
+})
 
 class Home extends Component {
     constructor() {
@@ -62,19 +61,19 @@ class Home extends Component {
     }
 
     render() {
-
+       
         return (
             <>
-                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> :
+                {this.state.loading ? <ActivityIndicator style={styles.loading} color='#008b8b' size='large' /> : 
 
-                    <View style={styles.list}>
-                        <Search />
-                        <FlatList
-                            data={this.state.posts}
-                            keyExtractor={item => item.id.toString()}
-                            renderItem={({ item }) => <Post dataPost={item} navigation={this.props.navigation} />}
-                        />
-                    </View>
+                <View style={styles.list}>
+                    <Search />
+                    <FlatList 
+                    data={this.state.posts} 
+                    keyExtractor={item => item.id.toString()} 
+                    renderItem={({item})=> <Post dataPost={item} navigation={this.props.navigation}/> }
+                    />
+                </View>
                 }
             </>
         )

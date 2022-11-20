@@ -3,32 +3,6 @@ import { Camera } from 'expo-camera';
 import { View, StyleSheet, ActivityIndicator, Text, FlatList, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
 import { auth, db, storage } from '../firebase/config';
 
-const styles = StyleSheet.create({
-    cameraBody: {
-        height: '100vh',
-        width: '100vw',
-        position: 'absolute'
-    },
-    preview: {
-        height: 300,
-        width: 300
-    },
-    buttonArea: {
-        padding: 10,
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    botones: {
-        backgroundColor: '#008b8b',
-        fontSize: 20,
-        borderRadius: 5,
-        margin: 10
-    },
-    shootButton: {
-        alignItems: 'center'
-    }
-});
 
 class MyCamera extends Component {
 
@@ -37,7 +11,7 @@ class MyCamera extends Component {
         this.state = {
             permission: false,
             showCamera: true,
-            photo: ''
+            photo: '',
         }
     }
 
@@ -82,7 +56,8 @@ class MyCamera extends Component {
 
     clearPhoto() {
         this.setState({
-            showCamera: true
+            showCamera: true, 
+            photo: '',
         })
     }
 
@@ -113,7 +88,7 @@ class MyCamera extends Component {
                                 <Camera
                                     style={styles.cameraBody}
                                     type={Camera.Constants.Type.front}
-                                    ref={metodosDeCamera => this.metodosDeCamera = metodosDeCamera}
+                                    ref={met => this.metodosDeCamera = met}
                                 />
                                 <TouchableOpacity
                                     style={styles.shootButton}
@@ -133,3 +108,29 @@ class MyCamera extends Component {
 export default MyCamera;
 
 
+const styles = StyleSheet.create({
+    cameraBody: {
+        height: '100vh',
+        width: '100vw',
+        position: 'absolute'
+    },
+    preview: {
+        height: 300,
+        width: 300
+    },
+    buttonArea: {
+        padding: 10,
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    botones: {
+        backgroundColor: '#008b8b',
+        fontSize: 20,
+        borderRadius: 5,
+        margin: 10
+    },
+    shootButton: {
+        alignItems: 'center'
+    }
+});

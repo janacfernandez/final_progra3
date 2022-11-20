@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button, FlatList } from 'react-native';
 import { auth, db } from "../firebase/config";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 8,
     },
-    imagen: {
+    image: {
         height: 350,
     },
 
@@ -45,8 +45,24 @@ const styles = StyleSheet.create({
             padding: 3,
             marginBottom: 8
         },
+        image: {
+            height: 200,
+        },
+        field: {
+            borderColor: '#dcdcdc',
+            borderWidth: 1,
+            borderRadius: 2,
+            padding: 3,
+            marginBottom: 8
+        },
+        containerComentario: {
+            margin: 3,
+            border: '1px solid #008b8b ',
+            backgroundColor: 'white',
+            paddingVertical: 5,
+            paddingHorizontal: 8,
+        },
     },
-
 })
 
 class Post extends Component {
@@ -59,6 +75,7 @@ class Post extends Component {
             loading: true,
         }
     }
+
     componentDidMount() {
         if (this.props.dataPost.data.likes) {
             this.setState({
@@ -104,10 +121,23 @@ class Post extends Component {
         this.props.navigation.navigate('Comentarios', { id: this.props.dataPost.id, post: this.props.dataPost.data })
     }
 
-    render() {
+    render() {      
 
         return (
-            <View style={styles.container}>
+            <View style = {styles.container}>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Usuario', {usuario:this.props.dataPost.data.owner})}><Text> {this.props.dataPost.data.owner}</Text></TouchableOpacity>
+                <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
+                <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
+                <Text>{this.props.dataPost.data.textoPost}</Text>
+
+                <FlatList
+                        data={this.props.dataPost.data.comentarios.slice(0,4)}
+                        keyExtractor={item => item.createdAt.toString()}
+                        renderItem={({ item }) => <Text style = {styles.containerComentario}>{item.text}</Text>}
+                />
+
+                <Text>{this.state.likes}</Text>
+
                 {
                     auth.currentUser.email === this.props.dataPost.data.owner ?
                         <TouchableOpacity onPress={() => this.deletePost()}>
