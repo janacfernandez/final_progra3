@@ -83,7 +83,7 @@ class Register extends Component {
                 />
                 {
                     this.state.showCamera === true ?
-                        <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.camera} />
+                        <MyCamera style={styles.camera} onImageUpload={(url) => this.onImageUpload(url)} />
                         :
                         <Image style={styles.img} source={{uri: this.state.img }} />
                 }
@@ -111,37 +111,26 @@ class Register extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        paddingHorizontal: 10,
-        marginTop: 10
-    },
     grey: {
         backgroundColor: 'rgb(230, 230, 230)',
         borderRadius: '15px',
-        margin: '2%',
-        padding: 3,
-        textAlign: 'center',
-        fontSize: 17,
+        margin: '3%',
         color: 'white',
-        width: 350,
+        padding: 3,
     },
     blue: {
         backgroundColor: '#008b8b',
         borderRadius: '15px',
-        margin: '2%',
+        margin: '3%',
         padding: 3,
-        textAlign: 'center',
         fontSize: 17,
         color: 'white',
         width: 350,
     },
     message: {
         color: 'red',
-        fontSize: 20,
-        color: 'red',
         marginTop: '1%',
-        textAlign: 'center',
-        fontSize: 17,
+        fontSize: 12,
     },
     field: {
         width: '100%',
@@ -155,32 +144,32 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 50,
         color: '#008b8b',
-        height: 100,
         margin: 5,
+        fontWeight: 'bold',
     },
     text: {
-        textAlign: 'right',
-        marginLeft: '50%',
         color: '#008b8b',
-        marginTop: '1%',
-        fontSize: 12,
+        fontSize: 15,
         width: '100%',
-        marginTop: '5%',
+        marginTop: '2%',
     },
     container: {
-        backgroundColor: 'white',
         flex: 1,
         width: '100vw',
         padding: 30,
         justifyContent: 'flex-start',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     camera: {
+        width: '50%',
+        height: '50%',
+        borderRadius: 400,
+        marginBottom: 5,
         flex: 1,
         margin: 30
     },
     img: {
-        width: '200px',
+        width: '100px',
         height: '200px',
     }
 })

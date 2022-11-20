@@ -1,9 +1,53 @@
-import React, { Component } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image } from 'react-native';
+import React, { Component, useState } from "react";
+import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button } from 'react-native';
 import { auth, db } from "../firebase/config";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
-import { FlatList } from "react-native-web";
+import { Entypo } from '@expo/vector-icons';
+
+const styles = StyleSheet.create({
+    container: {
+        marginVertical: 20,
+        border: '1px solid #008b8b ',
+        backgroundColor: 'white',
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+    },
+    imagen: {
+        height: 350,
+    },
+
+    containerLikeCommDel: {
+        marginBottom: 30,
+        paddingHorizontal: 0,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+
+    likes: {
+        width: '49%',
+        textAlign: 'right',
+        text: {
+            paddingRight: 4
+        }
+    },
+    user: {
+        padding: 0,
+        textAlign: 'center',
+        text: {
+            fontWeight: 'bold'
+        },
+
+        field: {
+            borderColor: '#dcdcdc',
+            borderWidth: 1,
+            borderRadius: 2,
+            padding: 3,
+            marginBottom: 8
+        },
+    },
+
+})
 
 
 class Post extends Component {
@@ -54,6 +98,11 @@ class Post extends Component {
 
     }
 
+    deletePost() {
+        db.collection('Posts').doc(this.props.dataPost.id).delete()
+    }
+
+
     irComentarios() {
         this.props.navigation.navigate('Comentarios', {id:this.props.dataPost.id, post: this.props.dataPost.data} )
     }
@@ -82,7 +131,7 @@ class Post extends Component {
         
 
         return (
-            <View>
+            <View style = {styles.container}>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('Usuario', {usuario:this.props.dataPost.data.owner})}><Text> {this.props.dataPost.data.owner}</Text></TouchableOpacity>
                 <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
                 <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
@@ -97,15 +146,35 @@ class Post extends Component {
                 <Text>{this.state.likes}</Text>
 
                 {
-                    this.state.myLike ?
-                        <TouchableOpacity onPress={() => this.dislike()}>
-                            <Text><AntDesign name="heart" size={24} color="red" /></Text>
+                    auth.currentUser.email === this.props.dataPost.data.owner ?
+                        <TouchableOpacity onPress={() => this.deletePost()}>
+                            <Entypo name="cross" size={24} color="#008b8b" />
                         </TouchableOpacity> :
-                        <TouchableOpacity onPress={() => this.like()}>
-                            <Text><AntDesign name="hearto" size={24} color="black" /></Text>
-                        </TouchableOpacity>
-                }
+                        <View >
+                        </View>
 
+                }
+                <TouchableOpacity style={styles.user}>
+                    <Text> {this.props.dataPost.data.owner}</Text>
+                </TouchableOpacity>
+
+                <Image style={styles.imagen} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
+
+                <View style={styles.containerLikeCommDel}>
+                    {
+                        this.state.myLike ?
+                            <TouchableOpacity style={styles.likes} onPress={() => this.dislike()}>
+                                {this.state.likes}<AntDesign name="heart" size={24} color="red" />
+                            </TouchableOpacity> :
+                            <TouchableOpacity style={styles.likes} onPress={() => this.like()}>
+                                {this.state.likes}<AntDesign name="hearto" size={24} color="black" />
+                            </TouchableOpacity>
+                    }
+                     <TouchableOpacity >
+                                <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
+                                 </TouchableOpacity>
+                </View>
+                <Text>{this.props.dataPost.data.textoPost}</Text>
             </View>
         )
     }

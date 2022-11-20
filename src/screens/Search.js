@@ -1,26 +1,24 @@
-import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
-/* import SearchResults from '../components/SearchResults'; */
-import { db } from '../firebase/config';
+import { Text, View, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
+import React, { Component } from 'react'
+import { db } from "../firebase/config";
+import SearchResults from '../components/SearchResults'
 
 class Search extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {
-            value: '',
             search: false,
+            value: '',
             users: [],
             filteredUsers: [],
-            usersError: ''
+            usersError: '',
         }
     }
 
     componentDidMount() {
         db.collection('datosusuarios').onSnapshot(
             docs => {
-
                 let info = [];
-
                 docs.forEach(doc => {
                     info.push({ id: doc.id, data: doc.data() })
                 })
@@ -28,77 +26,59 @@ class Search extends Component {
             }
         )
     }
-
-    evitarSubmit(e) {
+    preventSubmit(e) {
         e.preventDefault()
         this.setState({ usersError: '' });
 
         let textToFilter = this.state.value.toLowerCase();
 
         if (this.state.value === '') {
-            this.setState({ requiredField: 'No podes mandar un formulario vacio' })
-        }
-        else {
+            this.setState({ requiredField: 'No es válido enviar un formulario vacio, intentelo de nuevo' })
+        } else {
             console.log(this.state.users)
             this.setState({ requiredField: '' })
-
-            const filteredUsers = this.state.users?.filter((user) => user.data.user.toLowerCase().includes(textToFilter));
-
+            const filteredUsers = this.state.users?.filter((user) => user.data.user?.toLowerCase().includes(textToFilter));
             console.log(filteredUsers)
-
-            if (filteredUsers.length === 0) return this.setState({ usersError: 'Perdón, ese usuario no existe', filteredUsers: [] })
-
-
+            if (filteredUsers.length === 0) return this.setState({ usersError: 'El usuario no existe, intenta algo diferente', filteredUsers: [] })
             this.setState({ filteredUsers: filteredUsers })
         }
-    }
 
+    }
 
     controlChanges(e) {
         this.setState({ value: e.target.value })
     }
 
-    clear() {
-        this.setState({
-            dataSearch: [],
-            search: false,
-            value: '',
-        })
-    };
-
 
     render() {
+
         return (
-            <View>
-                <Text style={styles.title}> Busca lo que quieras </Text>
-                <TextInput keyboardType='default'
-                    placeholder='Search '
+            <View style={styles.div}>
+                <Text style={styles.title}> Busca lo que desees </Text>
+
+                <TextInput style={styles.field}
+                    keyboardType='default'
+                    placeholder='Filtrar resultado'
                     onChangeText={text => this.setState({ value: text })}
                     value={this.state.value}
                     onChange={(e) => this.controlChanges(e)}
                 />
-
-
-                <TouchableOpacity onPress={(e) => this.evitarSubmit(e)}>
-                    <Text styles={styles.button}> Enviar </Text>
-                </TouchableOpacity>
-
                 <Text style={styles.error}>{this.state.requiredField}</Text>
-
-                <TouchableOpacity onPress={() => this.clear()}>
-                    <Text> Limpiar búsqueda </Text>
+                <TouchableOpacity onPress={(e) => this.preventSubmit(e)}>
+                    <Text style={styles.button}> Buscar </Text>
                 </TouchableOpacity>
 
-                <Text>{this.state.usersError}</Text>
+                <Text style={styles.error}>{this.state.usersError}</Text>
 
                 <FlatList
                     data={this.state.filteredUsers}
                     keyExtractor={item => item.id.toString()}
-                    renderItem={({ item }) => <Text>{item.data.user}</Text>}
+                    renderItem={({ item }) => <TouchableOpacity> <SearchResults style={styles.results} navigation={this.props.navigation} user={item.data} />  </TouchableOpacity>}
                 />
 
 
             </View>
+
         )
     }
 }
@@ -107,23 +87,28 @@ const styles = StyleSheet.create({
     field: {
         fontSize: 15,
         backgroundColor: 'rgb(230, 230, 230)',
-        margin: '1%',
+        margin: '2%',
         borderRadius: '30px',
         padding: '1%',
-        color: 'rgb(153, 153, 153)'
+        color: 'rgb(153, 153, 153)',
+    },
+    div: {
+        display: 'flex',
+        alignItems: 'center',
+        margin: 20
     },
     title: {
         fontSize: 30,
         fontWeight: 'bold',
-        margin: '8%',
+        color: '#008b8b',
+        margin: '3%',
+        textAlign: 'center',
     },
     button: {
         backgroundColor: '#008b8b',
         borderRadius: '15px',
-        marginTop: '5%',
         margin: '2%',
         padding: '1%',
-        textAlign: 'center',
         fontSize: 15,
         color: 'white',
     },
@@ -135,9 +120,9 @@ const styles = StyleSheet.create({
     },
     error: {
         color: 'red',
-        marginTop: '1%',
+        marginTop: '3%',
         textAlign: 'center',
-        fontSize: 12,
+        fontSize: 15,
     },
 })
 
