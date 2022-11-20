@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { auth } from '../firebase/config';
 
 class Login extends Component {
@@ -17,7 +17,6 @@ class Login extends Component {
 
     componentDidMount() {
         auth.onAuthStateChanged(user => {
-            // console.log(user.email)
             if (user) {
                 this.props.navigation.navigate('TabContainer');
             }
@@ -46,7 +45,7 @@ class Login extends Component {
     render() {
         return (
             <>
-                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : <View style={styles.container}>
+                {this.state.loading ? <ActivityIndicator style={styles.loading} color='#008b8b' size='large' /> : <View style={styles.container}>
                     <Text style={styles.title}>Logueo</Text>
                     <TextInput
                         style={styles.field}
@@ -106,10 +105,6 @@ const styles = StyleSheet.create({
     },
     loading: {
         marginTop: 250,
-        textAlign: 'center',
-        fontSize: 17,
-        color: 'white',
-        width: 350,
     },
     blue: {
         backgroundColor: '#008b8b',

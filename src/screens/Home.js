@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { View, Image, StyleSheet, TextInput, Text, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import Post from '../components/Post';
-import { auth, db } from '../firebase/config';
-import firebase from 'firebase';
+import { db } from '../firebase/config';
 import Search from './Search';
 
 
@@ -46,7 +45,7 @@ class Home extends Component {
                 height: 200,
             },
             loading: {
-                height: 200,
+                marginTop: 250,
             },
             field: {
                 borderColor: '#dcdcdc',
@@ -60,14 +59,14 @@ class Home extends Component {
                 flex: 1
             },
             loading:{
-                marginTop: 50,
+                marginTop: 250,
             }
         })
 
         return (
             <>
-                {this.state.loading ? <Image style={styles.loading} source={require('../images/Loading_icon.gif')}></Image> : 
-                
+                {this.state.loading ? <ActivityIndicator style={styles.loading} color='#008b8b' size='large' /> : 
+
                 <View style={styles.list}>
                     <Search />
                     <FlatList 

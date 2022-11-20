@@ -16,6 +16,7 @@ class Post extends Component {
             loading: true,
         }
     }
+
     componentDidMount() {
         if (this.props.dataPost.data.likes) {
             this.setState({
@@ -69,19 +70,32 @@ class Post extends Component {
                 padding: 3,
                 marginBottom: 8
             },
+            containerComentario: {
+                margin: 3,
+                border: '1px solid #008b8b ',
+                backgroundColor: 'white',
+                paddingVertical: 5,
+                paddingHorizontal: 8,
+            },
         })
 
+        
 
         return (
             <View>
-                <Text> {this.props.dataPost.data.owner}</Text>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Usuario', {usuario:this.props.dataPost.data.owner})}><Text> {this.props.dataPost.data.owner}</Text></TouchableOpacity>
                 <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
                 <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
                 <Text>{this.props.dataPost.data.textoPost}</Text>
 
-
+                <FlatList
+                        data={this.props.dataPost.data.comentarios.slice(0,4)}
+                        keyExtractor={item => item.createdAt.toString()}
+                        renderItem={({ item }) => <Text style = {styles.containerComentario}>{item.text}</Text>}
+                />
 
                 <Text>{this.state.likes}</Text>
+
                 {
                     this.state.myLike ?
                         <TouchableOpacity onPress={() => this.dislike()}>
@@ -90,8 +104,8 @@ class Post extends Component {
                         <TouchableOpacity onPress={() => this.like()}>
                             <Text><AntDesign name="hearto" size={24} color="black" /></Text>
                         </TouchableOpacity>
-
                 }
+
             </View>
         )
     }
