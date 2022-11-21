@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera';
+import Images from "../components/Images";
 
 const styles = StyleSheet.create({
     grey: {
@@ -15,10 +16,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#008b8b',
         borderRadius: '15px',
         margin: '3%',
-        padding: 3,
-        fontSize: 17,
         color: 'white',
-        width: 350,
+        width: 85,
+        padding: 3,
     },
     message: {
         color: 'red',
@@ -79,7 +79,9 @@ class Register extends Component {
             registered: false,
             required: '',
             error: '',
-            showCamera: true,
+            showCamera: false,
+            gallery: false,
+            elegirFoto: true,
         }
     }
 
@@ -103,13 +105,25 @@ class Register extends Component {
                         bio: this.state.bio,
                         img: this.state.img,
                     })
-                        .then(() => { this.props.navigation.navigate('Log In'); })
+                        .then(() => {
+                            this.props.navigation.navigate('Log In')
+                            this.setState({
+                                showCamera: false,
+                                gallery: false,
+                                elegirFoto: true
+                            })
+                        })
                 })
                 .catch(err => { this.setState({ error: err.message }) })
     }
 
     onImageUpload(url) {
-        this.setState({ showCamera: false, img: url })
+        this.setState({
+            showCamera: false,
+            img: url,
+            gallery: false,
+            elegirFoto: false
+        })
     }
 
     render() {
@@ -119,7 +133,7 @@ class Register extends Component {
                 <TextInput
                     style={styles.field}
                     keyboardType='email-address'
-                    placeholder='Email'
+                    placeholder='Mail'
                     onChangeText={text => this.setState({ email: text })}
                     value={this.state.email}
                 />
@@ -146,33 +160,62 @@ class Register extends Component {
                     value={this.state.bio}
                 />
                 {
-                    this.state.showCamera === true ?
-                        <MyCamera style={styles.camera} onImageUpload={(url) => this.onImageUpload(url)} />
+                    this.state.showCamera === true
+                        ? <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.camera} />
                         :
-                        <Image style={styles.img} source={{ uri: this.state.img }} />
+                        this.state.gallery ?
+                            <Images onImageUpload={(url) => this.onImageUpload(url)} style={styles.camera} />
+                            :
+                            <View style={styles.container}>
+
+                                {this.state.elegirFoto ?
+                                    <>
+                                        <TouchableOpacity onPress={() => {
+                                            this.setState({
+                                                gallery: true
+                                            })
+                                        }}>
+                                            <Text> Abrir galería </Text>
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity onPress={() => {
+                                            this.setState({
+                                                showCamera: true
+                                            })
+                                        }}>
+                                            <Text> Abrir camara </Text>
+                                        </TouchableOpacity>
+                                    </>
+                                    :
+                                    <>
+                                        <Image style={styles.img} source={{ uri: this.state.img }} />
+
+                                        {this.state.email == '' || this.state.password == '' || this.state.user == '' ?
+                                            <Text style={styles.grey}> Registrarme</Text>
+                                            :
+                                            <TouchableOpacity onPress={() => this.onSubmit()}>
+                                                <Text style={styles.blue} >Registrarme</Text>
+                                            </TouchableOpacity>}
+
+
+                                        <Text style={styles.message}>{this.state.error}</Text>
+                                        <Text style={styles.message}>{this.state.required}</Text>
+
+                                        <TouchableOpacity onPress={() => this.props.navigation.pop()}>
+                                            <Text style={styles.text}> Ya tenes una cuenta? Logueate!</Text>
+                                        </TouchableOpacity>
+                                    </>
+                                }
+
+                            </View>
                 }
+            </View>
 
-
-                {this.state.email == '' || this.state.password == '' || this.state.user == '' ?
-                    <Text style={styles.grey}> Registrarme</Text>
-                    :
-                    <TouchableOpacity onPress={() => this.onSubmit()}>
-                        <Text style={styles.blue} >Registrarme</Text>
-                    </TouchableOpacity>}
-
-
-                <Text style={styles.message}>{this.state.error}</Text>
-                <Text style={styles.message}>{this.state.required}</Text>
-
-                <TouchableOpacity onPress={() => this.props.navigation.pop()}>
-                    <Text style={styles.text}> Ya tenes una cuenta? Logueate!</Text>
-                </TouchableOpacity>
-            </View >
-
-        )
+        );
     }
 
 }
+
 
 
 export default Register;

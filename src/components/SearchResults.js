@@ -29,11 +29,9 @@ class SearchResults extends Component {
         }
     }
 
-/*     goToProfile(user) {
-        this.props.navigation.navigate('Ir atrás', { user: user })
-    } */
-
-
+    goToProfile(user) {
+        this.props.navigation.navigate('Profile', {user: user})  
+} 
     render() {
         return (
             <TouchableOpacity onPress={() => this.user()}> <View style={styles.padre}>  <Image source={this.props.user.img} style={styles.imagen} />

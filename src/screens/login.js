@@ -33,10 +33,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#008b8b',
         borderRadius: '15px',
         margin: '3%',
-        padding: 3,
-        fontSize: 17,
         color: 'white',
-        width: 350,
+        width: 85,
+        padding: 3,
     },
     field: {
         width: '100%',
@@ -114,14 +113,14 @@ class Login extends Component {
                     <TextInput
                         style={styles.field}
                         keyboardType='email-address'
-                        placeholder='Email'
+                        placeholder='Mail'
                         onChangeText={text => this.setState({ email: text })}
                         value={this.state.email}
                     />
                     <TextInput
                         style={styles.field}
                         keyboardType='default'
-                        placeholder='password'
+                        placeholder='Contraseña'
                         secureTextEntry={true}
                         onChangeText={text => this.setState({ password: text })}
                         value={this.state.password}

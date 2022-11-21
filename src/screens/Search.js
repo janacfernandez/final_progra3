@@ -1,7 +1,8 @@
 import { Text, View, TextInput, TouchableOpacity, FlatList, StyleSheet } from 'react-native'
 import React, { Component } from 'react'
 import { db } from "../firebase/config";
-import SearchResults from '../components/SearchResults'
+import SearchResults from '../components/SearchResults';
+import { AntDesign } from '@expo/vector-icons';
 
 class Search extends Component {
     constructor(props) {
@@ -26,35 +27,36 @@ class Search extends Component {
             }
         )
     }
-    preventSubmit(e) {
-        e.preventDefault()
-        this.setState({ usersError: '' });
-
-        let textToFilter = this.state.value.toLowerCase();
-
-        if (this.state.value === '') {
-            this.setState({ requiredField: 'No es válido enviar un formulario vacio, intentelo de nuevo' })
-        } else {
-            console.log(this.state.users)
-            this.setState({ requiredField: '' })
-            const filteredUsers = this.state.users?.filter((user) => user.data.user?.toLowerCase().includes(textToFilter));
-            console.log(filteredUsers)
-            if (filteredUsers.length === 0) return this.setState({ usersError: 'El usuario no existe, intenta algo diferente', filteredUsers: [] })
-            this.setState({ filteredUsers: filteredUsers })
-        }
-
-    }
 
     controlChanges(e) {
         this.setState({ value: e.target.value })
+        if (e.target.value === '') {
+            this.setState({ filteredUsers: [] })
+        } else {
+            let filteredUsers = this.state.users?.filter((user) => user.data.user?.toLowerCase().includes(e.target.value));
+            this.setState({ filteredUsers: filteredUsers })
+            if (filteredUsers.length === 0) {
+                this.setState({
+                    usersError: true
+                })
+            } else {
+                this.setState({
+                    usersError: false
+                })
+            }
+        }
     }
+
+
+
 
 
     render() {
 
         return (
             <View style={styles.div}>
-                <Text style={styles.title}> Busca lo que desees </Text>
+                <Text style={styles.title}> Busca lo que desees <AntDesign name="search1" size={25} color="black" /> </Text>
+
 
                 <TextInput style={styles.field}
                     keyboardType='default'
@@ -63,12 +65,14 @@ class Search extends Component {
                     value={this.state.value}
                     onChange={(e) => this.controlChanges(e)}
                 />
-                <Text style={styles.error}>{this.state.requiredField}</Text>
-                <TouchableOpacity onPress={(e) => this.preventSubmit(e)}>
-                    <Text style={styles.button}> Buscar </Text>
-                </TouchableOpacity>
 
-                <Text style={styles.error}>{this.state.usersError}</Text>
+{
+                    this.state.usersError === true ?
+                        <Text style={styles.error}> No se encontraron resultados </Text>
+                        :
+                        false
+                }
+            
 
                 <FlatList
                     data={this.state.filteredUsers}
