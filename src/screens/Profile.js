@@ -1,104 +1,162 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, FlatList, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Image } from 'react-native';
 import { auth, db } from '../firebase/config';
 import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 import Post from '../components/Post';
 
 class Profile extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             usuarioState: '',
             posteosUsuario: [],
         };
-    }  
-    
-    logOut(){
+    }
+
+    logOut() {
         auth.signOut();
         this.props.navigation.navigate('Log In');
     }
 
-    componentDidMount(){
+    componentDidMount() {
         let usuario = '';
 
-        if(this.props.route.params != undefined){
+        if (this.props.route.params != undefined) {
             usuario = this.props.route.params.usuario;
         }
 
-        else{
-                usuario = auth.currentUser.email;
+        else {
+            usuario = auth.currentUser.email;
         };
 
         db.collection('datosusuarios')
-        .where('owner', '==', usuario)            
-        .onSnapshot(docs => {
-            docs.forEach(doc=>{
-                this.setState({
-                    usuarioState: doc.data(),
+            .where('owner', '==', usuario)
+            .onSnapshot(docs => {
+                docs.forEach(doc => {
+                    this.setState({
+                        usuarioState: doc.data(),
+                    })
                 })
-        })
-        });
-        
+            });
+
         db.collection('Posts')
-        .where('owner', '==', usuario)
-        .onSnapshot(docs => {
-            let posteos = [];
-            docs.forEach(doc => {
-                posteos.push({
-                    id: doc.id,
-                    data: doc.data(),
+            .where('owner', '==', usuario)
+            .onSnapshot(docs => {
+                let posteos = [];
+                docs.forEach(doc => {
+                    posteos.push({
+                        id: doc.id,
+                        data: doc.data(),
+                    })
                 })
-            })
-            this.setState({
-            posteosUsuario: posteos,
-        });
-        });
+                this.setState({
+                    posteosUsuario: posteos,
+                });
+            });
     }
-    
-        
-    render(){
-        const styles = StyleSheet.create({
-            image: {
-                borderRadius:15,
-                marginTop:50,
-                height: 100,
-            },
-        })
 
-        console.log(this.state.usuarioState)
 
-        return(
+    render() {
 
-            <View>
-                <AntDesign onPress={()=>this.props.navigation.navigate('Home')} name="home" size={24} color="black" />
 
-            {this.state.usuarioState.owner == auth.currentUser.email ?
+        return (
+            <ScrollView style={styles.containerHome}>
+                <View style={styles.containerH}>
+                    <AntDesign onPress={() => this.props.navigation.navigate('Home')} name="home" size={24} color="white" />
+                    {this.state.usuarioState.owner == auth.currentUser.email ?
 
-            <TouchableOpacity onPress={() => this.logOut()}><Text>Log Out</Text></TouchableOpacity> :
+                        <Entypo onPress={() => this.logOut()} name="log-out" size={23} color="white" /> :
 
-            <></>
+                        <></>
 
-            }
+                    }
+                </View>
 
-            <Text>{this.state.usuarioState.user}</Text>
-            {this.state.usuarioState.img == undefined ? <Image style={styles.image} source={require('../images/defaultProfile.png')}/>:
-            <Image style={styles.image} source={{ uri: this.state.usuarioState.img }} resizeMode='contain' />
-            }
-            
-            <Text>{this.state.usuarioState.owner}</Text>
-            <Text>{this.state.usuarioState.bio}</Text>
-            <Text>{this.state.posteosUsuario.length} posteos subidos.</Text>
-            
+                <View >
 
-            <FlatList 
-                    data={this.state.posteosUsuario} 
-                    keyExtractor={item => item.id.toString()} 
-                    renderItem={({item})=> <Post dataPost={item} navigation={this.props.navigation}/> }
-            />
+                    <Text style={styles.title}>{this.state.usuarioState.user}</Text>
 
-            </View>            
-        )  
+                    <View style={styles.container}>
+                        {this.state.usuarioState.img == undefined ?
+                            <Image style={styles.imagen} source={require('../images/defaultProfile.jpg')} resizeMode='contain' />
+                            :
+                            <Image style={styles.imagen} source={{ uri: this.state.usuarioState.img }} resizeMode='contain' />
+                        }
+
+                        <View style={styles.desc}>
+                            <Text style={styles.texto}>{this.state.usuarioState.owner}</Text>
+                            <Text style={styles.texto}>{this.state.usuarioState.bio}</Text>
+                            <Text style={styles.texto} >{this.state.posteosUsuario.length} posteos subidos</Text>
+                        </View>
+                    </View>
+                    <View style={styles.infoProfileContainer}>
+                        <FlatList
+                            data={this.state.posteosUsuario}
+                            keyExtractor={item => item.id.toString()}
+                            renderItem={({ item }) => <Post dataPost={item} navigation={this.props.navigation} />}
+                        />
+                    </View>
+                </View>
+            </ScrollView>
+        )
     }
 }
+
+
+const styles = StyleSheet.create({
+
+    imagen: {
+        height: 100,
+        width: 100,
+        margin: 5,
+        borderRadius: 100,
+
+    },
+    title: {
+        marginLeft: 20,
+        fontWeight: 'bold',
+        fontSize: 20,
+        marginTop: 5
+
+
+    },
+    container: {
+        display: 'flex',
+        flexDirection: 'row',
+
+    },
+    infoProfileContainer: {
+        textAlign: 'center'
+    },
+    desc: {
+        justifyContent: 'flex-start',
+        marginTop: 30,
+        marginRight: 30,
+
+
+    },
+    texto: {
+        color: 'white',
+        flexWrap: 'wrap'
+
+    },
+    logout: {
+        marginRight: 'auto'
+
+    },
+    containerHome: {
+        backgroundColor: '#008b8b',
+        flex: 1,
+
+    },
+    containerH: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        display: 'flex',
+        margin: 10
+    },
+
+})
 
 export default Profile;

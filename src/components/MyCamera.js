@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Camera } from 'expo-camera';
-import { View, StyleSheet, ActivityIndicator, Text, FlatList, ScrollView, TouchableOpacity, TextInput, Image } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
 import { auth, db, storage } from '../firebase/config';
+import { Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+
 
 
 class MyCamera extends Component {
@@ -64,73 +67,85 @@ class MyCamera extends Component {
     render() {
 
         return (
-            <>
-                {this.state.permission ?
-                        this.state.showCamera === false
-                            ?
-                            <View>
-                                <Image style={styles.preview}
-                                    source={{ uri: this.state.photo }}
-                                />
-                                <View style={styles.buttonArea}>
-                                    <TouchableOpacity onPress={() => this.savePhoto()}>
-                                        <Text style={styles.botones} >Aceptar</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => this.clearPhoto()}>
-                                        <Text style={styles.botones}>Rechazar</Text>
-                                    </TouchableOpacity>
-                                </View>
+            <View  style={styles.container}>
 
-                            </View>
-                            :
-
-                            <View>
-                                <Camera
-                                    style={styles.cameraBody}
-                                    type={Camera.Constants.Type.front}
-                                    ref={met => this.metodosDeCamera = met}
-                                />
-                                <TouchableOpacity
-                                    style={styles.shootButton}
-                                    onPress={() => this.takePicture()}>
-                                    <Text style={styles.botones} >Shoot</Text>
+                {
+                this.state.permission ?
+                    this.state.showCamera === false?
+                        <>
+                            <Image style={styles.preview}
+                                source={{ uri: this.state.photo }}
+                            />
+                            <View style={styles.cont}>
+                                <TouchableOpacity onPress={() => this.savePhoto()}>
+                                    <Text style={styles.botones}>
+                                        Aceptar
+                                        </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => this.clearPhoto()}>
+                                    <Text style={styles.botones}>
+                                        Rechazar
+                                        </Text>
                                 </TouchableOpacity>
                             </View>
+
+                        </>
                         :
-                        <Text>
-                            You need permission to take a picture
-                        </Text>
+                        <View style={styles.container}>
+                            <Camera
+                                style={styles.cameraBody}
+                                type={Camera.Constants.Type.front}
+                                ref={met => this.metodosDeCamera = met}
+                            />
+                            <TouchableOpacity
+                                style={styles.shootButton}
+                                onPress={() => this.takePicture()}>
+                                <Entypo name="circle" size={50} color="black" />
+                            </TouchableOpacity>
+                        </View>
+                    :
+                    <Text>
+                        You need permission to take a picture
+                    </Text>
                 }
-            </>
-        )
+                </View>
+                )
     }
 }
 export default MyCamera;
 
 
 const styles = StyleSheet.create({
+    container:{
+        flex:1
+    },
     cameraBody: {
-        height: '100vh',
-        width: '100vw',
-        position: 'absolute'
+        flex:7
     },
     preview: {
-        height: 300,
-        width: 300
+        marginTop: 40,
+        height: 350,
+        width: 350,
+        alignSelf: 'center'
     },
-    buttonArea: {
-        padding: 10,
-        flex: 1,
+    cont: {
+        flex:1, 
         flexDirection: 'row',
-        alignItems: 'center'
+        justifyContent: 'center'
     },
+
     botones: {
         backgroundColor: '#008b8b',
         fontSize: 20,
         borderRadius: 5,
-        margin: 10
+        margin: 10,
+        padding: 5, 
+        textAlign: 'center',
+        color: 'white',
+
     },
     shootButton: {
-        alignItems: 'center'
+        flex:1,
+        alignItems: 'center',
     }
 });

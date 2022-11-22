@@ -2,22 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import { storage } from '../firebase/config';
 import * as ImagePicker from 'expo-image-picker';
-
-const styles = StyleSheet.create({
-    buttonArea: {
-        padding: 10,
-        flex: 1,
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    botones: {
-        backgroundColor: '#008b8b',
-        fontSize: 20,
-        borderRadius: 5,
-        margin: 10, 
-
-    },
-});
+import { Entypo } from '@expo/vector-icons';
 
 class Images extends Component {
 
@@ -71,18 +56,22 @@ class Images extends Component {
             <>
                 {this.state.image != ''
 
-                    ? <View style={styles.buttonArea}>
-                        {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />}
-                        <TouchableOpacity onPress={() => this.savePhoto()}>
-                            <Text style={styles.botones}>Aceptar</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => this.clearPhoto()}>
-                            <Text style={styles.botones}>Rechazar</Text>
-                        </TouchableOpacity>
+                    ?
+                    <View style={styles.buttonArea}>
+                        {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 350, height: 350, marginTop: 40, }} />}
+                        <View style={styles.container}>
+                            <TouchableOpacity onPress={() => this.savePhoto()}>
+                                <Text style={styles.button}>Aceptar</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.clearPhoto()}>
+                                <Text style={styles.button}>Rechazar</Text>
+                            </TouchableOpacity>
+                        </View>
+
                     </View> :
                     <View >
                         <TouchableOpacity onPress={() => this.pickImage()}>
-                            <Text> Select an Image</Text> </TouchableOpacity>
+                            <Text style={styles.butt}  > Select an Image <Entypo name="folder-images" size={24} color="#008b8b" /></Text></TouchableOpacity>
                     </View>
                 }
             </>
@@ -90,4 +79,33 @@ class Images extends Component {
     }
 
 }
-export default Images; 
+export default Images;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: 'row'
+    },
+    buttonArea: {
+        padding: 10,
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    button: {
+        backgroundColor: '#008b8b',
+        fontSize: 20,
+        borderRadius: 5,
+        margin: 10,
+        padding: 5,
+        textAlign: 'center',
+        color: 'white',
+    },
+    butt: {
+        textAlign: 'center',
+        color: '#008b8b',
+        justifyContent: 'center',
+        marginTop: 225,
+        textAlign: 'center',
+        alignItems: 'center'
+    }
+});

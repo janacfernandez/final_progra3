@@ -1,69 +1,9 @@
 import React, { Component, useState } from "react";
-import { Text, View, TouchableOpacity, StyleSheet, TextInput, Image, Alert, Button, FlatList } from 'react-native';
+import { Text, View, TouchableOpacity, StyleSheet, Image, FlatList } from 'react-native';
 import { auth, db } from "../firebase/config";
 import firebase from "firebase";
 import { AntDesign } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
-
-const styles = StyleSheet.create({
-    container: {
-        marginVertical: 20,
-        border: '1px solid #008b8b ',
-        backgroundColor: 'white',
-        paddingVertical: 5,
-        paddingHorizontal: 8,
-    },
-    image: {
-        height: 350,
-    },
-
-    containerLikeCommDel: {
-        marginBottom: 30,
-        paddingHorizontal: 0,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-
-    likes: {
-        width: '49%',
-        textAlign: 'right',
-        text: {
-            paddingRight: 4
-        }
-    },
-    user: {
-        padding: 0,
-        textAlign: 'center',
-        text: {
-            fontWeight: 'bold'
-        },
-
-        field: {
-            borderColor: '#dcdcdc',
-            borderWidth: 1,
-            borderRadius: 2,
-            padding: 3,
-            marginBottom: 8
-        },
-        image: {
-            height: 200,
-        },
-        field: {
-            borderColor: '#dcdcdc',
-            borderWidth: 1,
-            borderRadius: 2,
-            padding: 3,
-            marginBottom: 8
-        },
-        containerComentario: {
-            margin: 3,
-            border: '1px solid #008b8b ',
-            backgroundColor: 'white',
-            paddingVertical: 5,
-            paddingHorizontal: 8,
-        },
-    },
-})
 
 class Post extends Component {
     constructor(props) {
@@ -121,22 +61,10 @@ class Post extends Component {
         this.props.navigation.navigate('Comentarios', { id: this.props.dataPost.id, post: this.props.dataPost.data })
     }
 
-    render() {      
+    render() {
 
         return (
-            <View style = {styles.container}>
-                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Usuario', {usuario:this.props.dataPost.data.owner})}><Text> {this.props.dataPost.data.owner}</Text></TouchableOpacity>
-                <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
-                <Text onPress = {()=>this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
-                <Text>{this.props.dataPost.data.textoPost}</Text>
-
-                <FlatList
-                        data={this.props.dataPost.data.comentarios.slice(0,4)}
-                        keyExtractor={item => item.createdAt.toString()}
-                        renderItem={({ item }) => <Text style = {styles.containerComentario}>{item.text}</Text>}
-                />
-
-                <Text>{this.state.likes}</Text>
+            <View style={styles.container}>
 
                 {
                     auth.currentUser.email === this.props.dataPost.data.owner ?
@@ -147,31 +75,100 @@ class Post extends Component {
                         </View>
 
                 }
-                <TouchableOpacity style={styles.user} >
-                    <Text> {this.props.dataPost.data.owner}</Text>
-                </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('Usuario', { usuario: this.props.dataPost.data.owner })}><Text style={styles.user}> {this.props.dataPost.data.owner}</Text></TouchableOpacity>
+                <Image style={styles.image} source={{ uri: this.props.dataPost.data.photo }} resizeMode='cover' />
 
-                <Image style={styles.imagen} source={{ uri: this.props.dataPost.data.photo }} resizeMode='contain' />
-
-                <View style={styles.containerLikeCommDel}>
+                <View style={styles.likeCom}>
                     {
+
                         this.state.myLike ?
-                            <TouchableOpacity style={styles.likes} onPress={() => this.dislike()}>
-                                {this.state.likes}<AntDesign name="heart" size={24} color="red" />
-                            </TouchableOpacity> :
-                            <TouchableOpacity style={styles.likes} onPress={() => this.like()}>
-                                {this.state.likes}<AntDesign name="hearto" size={24} color="black" />
-                            </TouchableOpacity>
+                            <View style={styles.likeCom}>
+                                <TouchableOpacity>
+                                    <Text onPress={() => this.dislike()}> {this.state.likes} <AntDesign name="heart" size={24} color="red" /> </Text>
+                                </TouchableOpacity>
+                            </View> :
+                            <View style={styles.likeCom}>
+                                <TouchableOpacity style={styles.likes} >
+                                    <Text onPress={() => this.like()}> {this.state.likes} <AntDesign name="hearto" size={24} color="black" /> </Text>
+                                </TouchableOpacity>
+                            </View>
+
+
                     }
-                    <TouchableOpacity >
-                        <Text onPress={() => this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
-                    </TouchableOpacity>
+                    <View style={styles.likeCom}>
+                        <TouchableOpacity style={styles.likes}>
+                            <Text onPress={() => this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
-                <Text>{this.props.dataPost.data.textoPost}</Text>
+                <View >
+                    <Text style={styles.text} >{this.props.dataPost.data.textoPost}</Text>
+                </View>
+
+                <View style={styles.cajacomentarios}>
+                    <FlatList
+                        data={this.props.dataPost.data.comentarios.slice(0, 4)}
+                        keyExtractor={item => item.createdAt.toString()}
+                        renderItem={({ item }) => <Text style={styles.containerComentario}>{item.text}</Text>}
+                    />
+                </View>
             </View>
         )
     }
 }
 
+
 export default Post;
+
+const styles = StyleSheet.create({
+    container: {
+        marginVertical: 20,
+        border: '1px solid #008b8b ',
+        backgroundColor: 'white',
+        paddingVertical: 5,
+        paddingHorizontal: 8,
+    },
+    image: {
+        height: 350,
+    },
+
+    likeCom: {
+        marginTop: 5,
+        marginBottom: 5,
+        paddingHorizontal: 0,
+        flexDirection: 'row',
+    },
+
+    likes: {
+        width: 49,
+        textAlign: 'right',
+    },
+    user: {
+        padding: 0,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: '#008b8b ',
+        margin: 10
+
+    },
+    cajacomentarios: {
+        alignItems: 'flex-start',
+        backgroundColor: 'whitesmoke'
+    },
+    text: {
+        fontWeight: 'bold',
+        fontSize: 15,
+        marginBottom: 5,
+        fontFamily: 'Arial'
+    },
+
+    containerComentario: {
+        fontSize: 15,
+        paddingVertical: 1,
+        paddingHorizontal: 1,
+        fontFamily: 'Baskerville',
+
+    },
+})
 
