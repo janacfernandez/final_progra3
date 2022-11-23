@@ -60,8 +60,9 @@ const styles = StyleSheet.create({
     },
     error: {
         color: 'red',
-        marginTop: '1%',
+        marginTop: '2%',
         fontSize: 12,
+        fontWeight: 'bold',
     }
 });
 

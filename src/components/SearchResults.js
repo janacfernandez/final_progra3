@@ -1,6 +1,5 @@
-import { Text, View, TouchableOpacity, Image, StyleSheet} from 'react-native';
+import { Text, View, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import React, { Component } from 'react';
-import { auth} from '../firebase/config';
 
 const styles = StyleSheet.create({
     texto: {
@@ -29,24 +28,20 @@ class SearchResults extends Component {
         }
     }
 
-    goToProfile(user) {
-        this.props.navigation.navigate('Profile', {user: user})  
-} 
+    user() {
+        this.props.navigation.navigate('Usuario', {usuario: this.props.user.user})
+    }
+
+
     render() {
         return (
-            <TouchableOpacity onPress={() => this.user()}> <View style={styles.padre}>  <Image source={this.props.user.img} style={styles.imagen} />
-
-
-                {this.props.user.owner == auth.currentUser.email ?
-                    <Text style={styles.texto} onPress={() => this.props.navigation.navigate("Profile")}> Mail: {this.props.user.owner}</Text>
-                    :
-                    <Text style={styles.texto} onPress={() => this.goToProfile(this.props.user.owner)}> Mail: {this.props.user.owner}</Text>
-                }
-
-
+            <TouchableOpacity onPress={() => this.user()}>
+                <View style={styles.padre}>
+                    <Image source={this.props.user.img} style={styles.imagen} />
+                    <Text style={styles.texto}> Mail: {this.props.user.owner}</Text>
                 <Text style={styles.texto}> Usuario: {this.props.user.user} </Text> </View>
-            </TouchableOpacity>
-        )
+      </TouchableOpacity >  
+      )
     }
 }
 

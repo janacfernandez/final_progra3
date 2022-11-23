@@ -4,68 +4,6 @@ import { db, auth } from '../firebase/config';
 import MyCamera from '../components/MyCamera';
 import Images from "../components/Images";
 
-const styles = StyleSheet.create({
-    grey: {
-        backgroundColor: 'rgb(230, 230, 230)',
-        borderRadius: '15px',
-        margin: '3%',
-        color: 'white',
-        padding: 3,
-    },
-    blue: {
-        backgroundColor: '#008b8b',
-        borderRadius: '15px',
-        margin: '3%',
-        color: 'white',
-        width: 85,
-        padding: 3,
-    },
-    message: {
-        color: 'red',
-        marginTop: '1%',
-        fontSize: 12,
-    },
-    field: {
-        width: '100%',
-        fontSize: 17,
-        backgroundColor: 'rgb(230, 230, 230)',
-        margin: '1%',
-        borderRadius: '15px',
-        padding: '1%',
-        color: 'rgb(153, 153, 153)'
-    },
-    title: {
-        fontSize: 50,
-        color: '#008b8b',
-        margin: 5,
-        fontWeight: 'bold',
-    },
-    text: {
-        color: '#008b8b',
-        fontSize: 15,
-        width: '100%',
-        marginTop: '2%',
-    },
-    container: {
-        flex: 1,
-        width: '100vw',
-        padding: 30,
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-    },
-    camera: {
-        width: '50%',
-        height: '50%',
-        borderRadius: 400,
-        marginBottom: 5,
-        flex: 1,
-        margin: 30
-    },
-    img: {
-        width: '100px',
-        height: '200px',
-    }
-});
 
 class Register extends Component {
     constructor(props) {
@@ -129,6 +67,7 @@ class Register extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <View  style={styles.contendedor}>
                 <Text style={styles.title}>Registro</Text>
                 <TextInput
                     style={styles.field}
@@ -159,14 +98,15 @@ class Register extends Component {
                     onChangeText={text => this.setState({ bio: text })}
                     value={this.state.bio}
                 />
+                </View>
                 {
                     this.state.showCamera === true
-                        ? <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.camera} />
+                        ? <MyCamera onImageUpload={(url) => this.onImageUpload(url)} style={styles.cameras} />
                         :
                         this.state.gallery ?
-                            <Images onImageUpload={(url) => this.onImageUpload(url)} style={styles.camera} />
+                            <Images onImageUpload={(url) => this.onImageUpload(url)} style={styles.cameras}  />
                             :
-                            <View style={styles.container}>
+                            <View  style={styles.container2}>
 
                                 {this.state.elegirFoto ?
                                     <>
@@ -188,7 +128,7 @@ class Register extends Component {
                                     </>
                                     :
                                     <>
-                                        <Image style={styles.img} source={{ uri: this.state.img }} />
+                                        <Image style={styles.img} source={{ uri: this.state.img }}  />
 
                                         {this.state.email == '' || this.state.password == '' || this.state.user == '' ?
                                             <Text style={styles.grey}> Registrarme</Text>
@@ -216,6 +156,69 @@ class Register extends Component {
 
 }
 
-
-
 export default Register;
+
+const styles = StyleSheet.create({
+    grey: {
+        backgroundColor: 'rgb(230, 230, 230)',
+        borderRadius: 15,
+        margin: 3,
+        color: 'white',
+        padding: 3,
+    },
+    blue: {
+        backgroundColor: '#008b8b',
+        borderRadius: 15,
+        margin: 3,
+        color: 'white',
+        width: 85,
+        padding: 3,
+    },
+    message: {
+        color: 'red',
+        marginTop: 1,
+        fontSize: 12,
+    },
+    field: {
+        width: 350,
+        fontSize: 17,
+        backgroundColor: 'rgb(230, 230, 230)',
+        margin: 5,
+        borderRadius: 15,
+        padding: 1,
+        color: 'rgb(153, 153, 153)',
+    },
+    title: {
+        fontSize: 50,
+        color: '#008b8b',
+        margin: 5,
+        fontWeight: 'bold',
+    },
+    text: {
+        color: '#008b8b',
+        fontSize: 15,
+        marginTop: 2,
+    },
+    container: {
+        flex:1 ,
+        padding: 30,
+    },
+
+    cameras: {
+        width: 300,
+        height:300,  
+        alignSelf: 'center'
+     }, 
+     container2: {
+        alignItems: 'center',
+        justifyContent: 'center', 
+        marginTop: 20
+     },
+     contendedor: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 10 
+     }
+
+  
+});
