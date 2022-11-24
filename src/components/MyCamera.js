@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { Camera } from 'expo-camera';
 import { View, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import { auth, db, storage } from '../firebase/config';
+import { storage } from '../firebase/config';
 import { Entypo } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-
-
 
 class MyCamera extends Component {
 
@@ -15,6 +12,7 @@ class MyCamera extends Component {
             permission: false,
             showCamera: true,
             photo: '',
+            error: '',
         }
     }
 
@@ -25,7 +23,7 @@ class MyCamera extends Component {
                     permission: true,
                 })
             })
-            .catch(e => console.log(e))
+            .catch(e => this.setState({error: e.message}))
 
     }
 
@@ -50,11 +48,11 @@ class MyCamera extends Component {
                             .then(url => {
                                 this.props.onImageUpload(url);
                             })
-                            .catch(e => console.log(e))
+                            .catch(e => this.setState({error: e.message}))
                     })
-                    .catch(e => console.log(e))
+                    .catch(e => this.setState({error: e.message}))
             })
-            .catch(e => console.log(e))
+            .catch(e => this.setState({error: e.message}))
     }
 
     clearPhoto() {
@@ -67,48 +65,53 @@ class MyCamera extends Component {
     render() {
 
         return (
+
+            <>
+            {this.state.error != '' ? <Text>Ocurrio el siguiente error {this.state.error}</Text> :
             <View  style={styles.container}>
 
-                {
-                this.state.permission ?
-                    this.state.showCamera === false?
-                        <>
-                            <Image style={styles.preview}
-                                source={{ uri: this.state.photo }}
-                            />
-                            <View style={styles.cont}>
-                                <TouchableOpacity onPress={() => this.savePhoto()}>
-                                    <Text style={styles.botones}>
-                                        Aceptar
-                                        </Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this.clearPhoto()}>
-                                    <Text style={styles.botones}>
-                                        Rechazar
-                                        </Text>
-                                </TouchableOpacity>
-                            </View>
-
-                        </>
-                        :
-                        <View style={styles.container}>
-                            <Camera
-                                style={styles.cameraBody}
-                                type={Camera.Constants.Type.front}
-                                ref={met => this.metodosDeCamera = met}
-                            />
-                            <TouchableOpacity
-                                style={styles.shootButton}
-                                onPress={() => this.takePicture()}>
-                                <Entypo name="circle" size={50} color="black" />
+            {
+            this.state.permission ?
+                this.state.showCamera === false?
+                    <>
+                        <Image style={styles.preview}
+                            source={{ uri: this.state.photo }}
+                        />
+                        <View style={styles.cont}>
+                            <TouchableOpacity onPress={() => this.savePhoto()}>
+                                <Text style={styles.botones}>
+                                    Aceptar
+                                    </Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => this.clearPhoto()}>
+                                <Text style={styles.botones}>
+                                    Rechazar
+                                    </Text>
                             </TouchableOpacity>
                         </View>
+
+                    </>
                     :
-                    <Text>
-                        You need permission to take a picture
-                    </Text>
-                }
-                </View>
+                    <View style={styles.container}>
+                        <Camera
+                            style={styles.cameraBody}
+                            type={Camera.Constants.Type.front}
+                            ref={met => this.metodosDeCamera = met}
+                        />
+                        <TouchableOpacity
+                            style={styles.shootButton}
+                            onPress={() => this.takePicture()}>
+                            <Entypo name="circle" size={50} color="black" />
+                        </TouchableOpacity>
+                    </View>
+                :
+                <Text>
+                    You need permission to take a picture
+                </Text>
+            }
+            </View>}
+            </>
+            
                 )
     }
 }

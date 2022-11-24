@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import { Text, View, TouchableOpacity, StyleSheet, Image, FlatList } from 'react-native';
 import { auth, db } from "../firebase/config";
 import firebase from "firebase";
@@ -24,6 +24,7 @@ class Post extends Component {
             })
         }
     }
+
     like() {
         db.collection('Posts').doc(this.props.dataPost.id).update({
             likes: firebase.firestore.FieldValue.arrayUnion(auth.currentUser.email)
@@ -37,7 +38,6 @@ class Post extends Component {
             .catch(e => console.log(e));
     }
 
-
     dislike() {
         db.collection('Posts').doc(this.props.dataPost.id).update({
             likes: firebase.firestore.FieldValue.arrayRemove(auth.currentUser.email)
@@ -49,7 +49,6 @@ class Post extends Component {
                 })
             })
             .catch(e => console.log(e));
-
     }
 
     deletePost() {
@@ -118,9 +117,6 @@ class Post extends Component {
     }
 }
 
-
-export default Post;
-
 const styles = StyleSheet.create({
     container: {
         marginVertical: 20,
@@ -171,4 +167,6 @@ const styles = StyleSheet.create({
 
     },
 })
+
+export default Post;
 

@@ -20,6 +20,7 @@ class Profile extends Component {
     }
 
     componentDidMount() {
+
         let usuario = '';
 
         if (this.props.route.params != undefined) {
@@ -58,8 +59,7 @@ class Profile extends Component {
 
 
     render() {
-
-
+       
         return (
             <ScrollView style={styles.containerHome}>
                 <View style={styles.containerH}>
@@ -79,7 +79,7 @@ class Profile extends Component {
 
                     <View style={styles.container}>
                         {this.state.usuarioState.img == undefined ?
-                            <Image style={styles.imagen} source={require('../images/defaultProfile.jpg')} resizeMode='contain' />
+                            <Image style={styles.imagen} source={require('../../assets/images/defaultProfile.jpg')} resizeMode='contain' />
                             :
                             <Image style={styles.imagen} source={{ uri: this.state.usuarioState.img }} resizeMode='contain' />
                         }

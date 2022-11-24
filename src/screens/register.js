@@ -156,8 +156,6 @@ class Register extends Component {
 
 }
 
-export default Register;
-
 const styles = StyleSheet.create({
     grey: {
         backgroundColor: 'rgb(230, 230, 230)',
@@ -220,5 +218,7 @@ const styles = StyleSheet.create({
         marginBottom: 10 
      }
 
-  
 });
+
+
+export default Register;

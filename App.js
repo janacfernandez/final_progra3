@@ -7,6 +7,8 @@ import Login from './src/screens/Login';
 import Register from './src/screens/Register';
 import Profile from './src/screens/Profile';
 import Comentarios from './src/screens/Comentarios';
+import SearchResults from './src/components/SearchResults';
+import Search from './src/screens/Search';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -18,6 +20,8 @@ export default function App() {
         <Stack.Screen name='Usuario' component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name='TabContainer' component={TabContainer} options={{ headerShown: false }} />
         <Stack.Screen name='Comentarios' component={Comentarios} options={{ headerShown: false }} />
+        <Stack.Screen name='Search' component={Search} options={{ headerShown: false }} />
+        <Stack.Screen name='SearchRes' component={SearchResults} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

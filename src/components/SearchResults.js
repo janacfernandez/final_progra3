@@ -23,17 +23,15 @@ const styles = StyleSheet.create({
 class SearchResults extends Component {
     constructor(props) {
         super(props)
-        this.state = {
-
-        }
     }
 
     user() {
-        this.props.navigation.navigate('Usuario', {usuario: this.props.user.user})
+        this.props.navigation.navigate('Usuario', {usuario: this.props.user.owner})
     }
 
 
     render() {
+
         return (
             <TouchableOpacity onPress={() => this.user()}>
                 <View style={styles.padre}>

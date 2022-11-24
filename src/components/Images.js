@@ -9,9 +9,11 @@ class Images extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: ''
+            image: '',
+            error: ''
         }
     }
+
     pickImage() {
         // No permissions request is necessary for launching the image library
         ImagePicker.launchImageLibraryAsync({
@@ -23,8 +25,7 @@ class Images extends Component {
             this.setState({
                 image: image.uri
             })
-        }).catch(e => console.log('el error es' + e.message))
-
+        }).catch(this.setState({error: e.message}))
     };
 
     savePhoto() {
@@ -38,11 +39,11 @@ class Images extends Component {
                             .then(url => {
                                 this.props.onImageUpload(url);
                             })
-                            .catch(e => console.log(e))
+                            .catch(e => this.setState({error: e.message}))
                     })
-                    .catch(e => console.log(e))
+                    .catch(e => this.setState({error: e.message}))
             })
-            .catch(e => console.log(e))
+            .catch(e => this.setState({error: e.message}))
     }
 
     clearPhoto() {
@@ -53,28 +54,37 @@ class Images extends Component {
 
     render() {
         return (
-            <>
-                {this.state.image != ''
+            <React.Fragment>
+            {this.state.error != '' ? <Text>Ocurrio el siguiente error {this.state.error}</Text> :
 
-                    ?
-                    <View style={styles.buttonArea}>
-                        {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 350, height: 350, marginTop: 40, }} />}
-                        <View style={styles.container}>
-                            <TouchableOpacity onPress={() => this.savePhoto()}>
-                                <Text style={styles.button}>Aceptar</Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={() => this.clearPhoto()}>
-                                <Text style={styles.button}>Rechazar</Text>
-                            </TouchableOpacity>
-                        </View>
+             <>
+             
+             {this.state.image != ''
 
-                    </View> :
-                    <View >
-                        <TouchableOpacity onPress={() => this.pickImage()}>
-                            <Text style={styles.butt}  > Select an Image <Entypo name="folder-images" size={24} color="#008b8b" /></Text></TouchableOpacity>
-                    </View>
-                }
-            </>
+                 ?
+                 <View style={styles.buttonArea}>
+                     {this.state.image && <Image source={{ uri: this.state.image }} style={{ width: 350, height: 350, marginTop: 40, }} />}
+                     <View style={styles.container}>
+                         <TouchableOpacity onPress={() => this.savePhoto()}>
+                             <Text style={styles.button}>Aceptar</Text>
+                         </TouchableOpacity>
+                         <TouchableOpacity onPress={() => this.clearPhoto()}>
+                             <Text style={styles.button}>Rechazar</Text>
+                         </TouchableOpacity>
+                     </View>
+
+                 </View> :
+                 <View >
+                     <TouchableOpacity onPress={() => this.pickImage()}>
+                         <Text style={styles.butt}  > Select an Image <Entypo name="folder-images" size={24} color="#008b8b" /></Text></TouchableOpacity>
+                 </View>
+
+             }
+
+         </>}
+
+            </React.Fragment>
+           
         );
     }
 

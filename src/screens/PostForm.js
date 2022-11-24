@@ -17,7 +17,6 @@ class PostForm extends Component {
             gallery: false,
             elegirFoto: true
         }
-
     }
 
     componentDidMount() {
@@ -125,8 +124,6 @@ class PostForm extends Component {
 
 }
 
-export default PostForm;
-
 
 const styles = StyleSheet.create({
     container: {
@@ -166,3 +163,5 @@ const styles = StyleSheet.create({
     }
 
 });
+
+export default PostForm;

@@ -126,6 +126,7 @@ class Login extends Component {
                         onChangeText={text => this.setState({ password: text })}
                         value={this.state.password}
                     />
+
                     {
                         this.state.email == '' || this.state.password == '' ?
                             <Text style={styles.grey}>Loguearme</Text>
@@ -135,8 +136,6 @@ class Login extends Component {
                             </TouchableOpacity>
 
                     }
-
-
 
                     <Text style={styles.message}>{this.state.error}</Text>
                     <Text style={styles.message}>{this.state.required}</Text>
@@ -150,4 +149,5 @@ class Login extends Component {
         )
     }
 }
+
 export default Login;

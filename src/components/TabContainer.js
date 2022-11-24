@@ -9,6 +9,7 @@ class TabContainer extends Component {
     constructor(){
         super();
     }
+    
     render(){
         const Tab = createBottomTabNavigator();
         return(

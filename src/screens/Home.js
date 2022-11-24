@@ -67,7 +67,7 @@ class Home extends Component {
                 {this.state.loading ? <ActivityIndicator style={styles.loading} color='#008b8b' size='large' /> : 
 
                 <View style={styles.list}>
-                    <Search />
+                    <Search navigation = {this.props.navigation} />
                     <FlatList 
                     data={this.state.posts} 
                     keyExtractor={item => item.id.toString()} 

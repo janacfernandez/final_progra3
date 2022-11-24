@@ -47,13 +47,8 @@ class Search extends Component {
         }
     }
 
-
-
-
-
     render() {
-
-        return (
+     return (
             <View style={styles.div}>
                 <Text style={styles.title}> Busca lo que desees <AntDesign name="search1" size={25} color="black" /> </Text>
 
@@ -129,7 +124,5 @@ const styles = StyleSheet.create({
         fontSize: 15,
     },
 })
-
-
 
 export default Search; 
