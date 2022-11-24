@@ -3,12 +3,13 @@ import { StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TabContainer from './src/components/TabContainer';
-import Login from './src/screens/Login';
-import Register from './src/screens/Register';
 import Profile from './src/screens/Profile';
 import Comentarios from './src/screens/Comentarios';
 import SearchResults from './src/components/SearchResults';
 import Search from './src/screens/Search';
+import Login from './src/screens/login';
+import Register from './src/screens/register'; 
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();

@@ -79,7 +79,7 @@ class Profile extends Component {
 
                     <View style={styles.container}>
                         {this.state.usuarioState.img == undefined ?
-                            <Image style={styles.imagen} source={require('../../assets/images/defaultProfile.jpg')} resizeMode='contain' />
+                            <Image style={styles.imagen} source={require('../images/defaultProfile.jpg')} resizeMode='cover' />
                             :
                             <Image style={styles.imagen} source={{ uri: this.state.usuarioState.img }} resizeMode='contain' />
                         }
@@ -90,7 +90,7 @@ class Profile extends Component {
                             <Text style={styles.texto} >{this.state.posteosUsuario.length} posteos subidos</Text>
                         </View>
                     </View>
-                    <View style={styles.infoProfileContainer}>
+                    <View>
                         <FlatList
                             data={this.state.posteosUsuario}
                             keyExtractor={item => item.id.toString()}
@@ -107,10 +107,10 @@ class Profile extends Component {
 const styles = StyleSheet.create({
 
     imagen: {
-        height: 100,
-        width: 100,
+        height: 75,
+        width: 75,
         margin: 5,
-        borderRadius: 100,
+        marginLeft: 20
 
     },
     title: {
@@ -124,21 +124,16 @@ const styles = StyleSheet.create({
     container: {
         display: 'flex',
         flexDirection: 'row',
-
     },
-    infoProfileContainer: {
-        textAlign: 'center'
-    },
+   
     desc: {
         justifyContent: 'flex-start',
-        marginTop: 30,
-        marginRight: 30,
-
-
+        marginTop: 15,
+        marginRight: 40,
+    
     },
     texto: {
         color: 'white',
-        flexWrap: 'wrap'
 
     },
     logout: {
@@ -147,15 +142,14 @@ const styles = StyleSheet.create({
     },
     containerHome: {
         backgroundColor: '#008b8b',
-        flex: 1,
 
     },
     containerH: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         display: 'flex',
-        margin: 10
-    },
+        margin: 10,
+        },
 
 })
 

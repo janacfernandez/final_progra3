@@ -25,7 +25,7 @@ class Images extends Component {
             this.setState({
                 image: image.uri
             })
-        }).catch(this.setState({error: e.message}))
+        }).catch(e => this.setState({error: e.message}))
     };
 
     savePhoto() {
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#008b8b',
         justifyContent: 'center',
-        marginTop: 225,
+        marginTop: 300,
         textAlign: 'center',
         alignItems: 'center'
     }

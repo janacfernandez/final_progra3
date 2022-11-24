@@ -82,21 +82,21 @@ class Post extends Component {
 
                         this.state.myLike ?
                             <View style={styles.likeCom}>
-                                <TouchableOpacity>
-                                    <Text onPress={() => this.dislike()}> {this.state.likes} <AntDesign name="heart" size={24} color="red" /> </Text>
+                                <TouchableOpacity onPress={() => this.dislike()}>
+                                    <Text > {this.state.likes} <AntDesign name="heart" size={24} color="red" /> </Text>
                                 </TouchableOpacity>
                             </View> :
                             <View style={styles.likeCom}>
-                                <TouchableOpacity style={styles.likes} >
-                                    <Text onPress={() => this.like()}> {this.state.likes} <AntDesign name="hearto" size={24} color="black" /> </Text>
+                                <TouchableOpacity style={styles.likes} onPress={() => this.like()}>
+                                    <Text> {this.state.likes} <AntDesign name="hearto" size={24} color="black" /> </Text>
                                 </TouchableOpacity>
                             </View>
 
 
                     }
                     <View style={styles.likeCom}>
-                        <TouchableOpacity style={styles.likes}>
-                            <Text onPress={() => this.irComentarios()}>{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
+                        <TouchableOpacity style={styles.likes} onPress={() => this.irComentarios()}>
+                            <Text >{this.props.dataPost.data.comentarios.length} <AntDesign name="message1" size={24} color="black" /></Text>
                         </TouchableOpacity>
                     </View>
 

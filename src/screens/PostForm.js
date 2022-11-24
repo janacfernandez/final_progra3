@@ -110,7 +110,7 @@ class PostForm extends Component {
                                             value={this.state.textoPost} />
 
                                         <TouchableOpacity style={styles.button} onPress={() => { this.onSubmit(); this.props.navigation.navigate('Home') }}>
-                                            <Text style={styles.buttonPost}> Subir Post</Text>
+                                            <Text > Subir Post</Text>
                                         </TouchableOpacity>
                                     </>
                                 }
@@ -137,11 +137,11 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         padding: 10,
         margin: 10,
-        width: 350
+        width: 300
     },
     imagen: {
-        height: 350,
-        width: 350,
+        height: 300,
+        width: 300,
         marginBottom: 20,
         marginTop: 20,
 
@@ -152,7 +152,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#008080',
         fontWeight: 'bold',
         padding: 5,
-        marginBottom: 5
+        marginBottom: 5,
+        marginBottom: 20
     },
 
     botones: {
@@ -160,7 +161,9 @@ const styles = StyleSheet.create({
          margin: 20,
          fontSize: 25, 
          color: '#008080'
-    }
+    },
+
+
 
 });
 

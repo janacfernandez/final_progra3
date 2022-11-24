@@ -99,7 +99,6 @@ class Login extends Component {
                     console.log(response);
                     console.log(`El email ingresado es: ${this.state.email}`);
                     console.log(`La contraseña ingresada es: ${this.state.password}`);
-                    this.setState({ loggedIn: true })
                     this.props.navigation.navigate('TabContainer');
                 })
                 .catch(err => { this.setState({ error: err.message }) })
